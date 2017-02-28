@@ -207,7 +207,7 @@ public:
         EmptyFrame();
     }
 
-    FramePanel(int x, int y, int xmin, int min){
+    FramePanel(int x, int y, int xmin, int ymin){
     	(*this).xmin = xmin;
     	(*this).ymin = ymin;
     	setXSize(x);
@@ -302,11 +302,8 @@ public:
 	void EmptyFrame(){
 		for(int i = 0; i < sizex; i++){
 			for(int j = 0; j<sizey; j++){
-				M[i][j] = Color(-1,-1,-1);
-				if(i == xmin || i == sizex){
-					M[i][j] = Color::WHITE;
-				}
-				if(j == ymin || j == sizey){
+				M[i][j] = Color::BLACK;
+				if(i == 0 || i == sizex-1 || j == 0 || j == sizey-1){
 					M[i][j] = Color::WHITE;
 				}
 			}

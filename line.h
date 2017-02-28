@@ -89,7 +89,7 @@ class Line : public Shape
             thick = t;
         }
 
-        void draw(FramePanel& a){
+        void draw(FramePanel* a){
             int xn=p1.getX(), yn=p1.getY();
             int dx=abs(p2.getX()-p1.getX());
             int dy=abs(p2.getY()-p1.getY());
@@ -113,7 +113,7 @@ class Line : public Shape
                         }
                         for(int k = 0; k < thick; k++)
                             for(int j = 0; j < thick; j++)
-                                a.set(c,xn+k,yn+j);
+                                (*a).set(c,xn+k,yn+j);
                     }
                 } else {
                     for (int i=0;i<abs(p2.getY()-p1.getY());i++){
@@ -132,7 +132,7 @@ class Line : public Shape
                         }
                         for(int k = 0; k < thick; k++)
                             for(int j = 0; j < thick; j++)
-                                a.set(c,xn+k,yn+j);
+                                (*a).set(c,xn+k,yn+j);
                     }
                     //scanf("%d", &inp);
                 }
@@ -140,7 +140,7 @@ class Line : public Shape
                 for (int i=0; i <dy; i++){
                     for(int k = 0; k < thick; k++){
                             for(int j = 0; j < thick; j++){
-                                a.set(c,xn+k,yn+j);
+                                (*a).set(c,xn+k,yn+j);
                             }
                     }   
                     if(p2.getY() > p1.getY()){

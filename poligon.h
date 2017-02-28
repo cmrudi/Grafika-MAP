@@ -9,7 +9,7 @@ using namespace std;
 class Poligon : public Shape
 {
     public:
-        Poligon() : arr_Line(), thickness(1), floodfill(Color::BLUE), LineColor(Color::BLACK){}
+        Poligon() : arr_Line(), thickness(1), floodfill(Color::BLUE), LineColor(Color::WHITE){}
 
         Poligon(int Linethickness, Color floodfill, Color LineColor): arr_Line(){
             thickness = Linethickness;
@@ -40,7 +40,7 @@ class Poligon : public Shape
             return temp;
         }
 
-        void draw(FramePanel& a){
+        void draw(FramePanel* a){
             for(unsigned int i = 0;i<arr_Line.size();i++){
                 Line ax;
                 ax = arr_Line[i];

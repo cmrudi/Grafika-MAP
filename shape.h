@@ -4,7 +4,7 @@
 class Shape
 {
     public:
-        virtual void draw(FramePanel& a) = 0;
+        virtual void draw(FramePanel* a) = 0;
 };
 
 #endif // SHAPE_H
