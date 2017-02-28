@@ -17,6 +17,19 @@ class Poligon : public Shape
             (*this).LineColor = LineColor;
         }
 
+        Poligon& operator=(const Poligon& pol){
+            arr_Line.clear();
+            thickness = pol.thickness;
+            floodfill = pol.floodfill;
+            LineColor = pol.LineColor;
+            for (int i = 0; i < pol.arr_Line.size(); ++i)
+            {
+                arr_Line.push_back(pol.arr_Line[i]);
+            }
+
+            return (*this);
+        }
+
         void add(Line a){
             a.setColor(LineColor);
             a.setThickness(thickness);
@@ -49,6 +62,8 @@ class Poligon : public Shape
                 ax.draw(a);
             }
         }
+
+       
 
         Color getLineColor(){
             return LineColor;
@@ -92,7 +107,51 @@ class Poligon : public Shape
             }
         }
 
-        
+
+         void drawTree(Point p) {
+            Line a,b,c,d,e;
+
+            a = Line(p, Point(p.getX(),p.getY()-5));
+            b = Line(Point(p.getX()-4,p.getY()-5),Point(p.getX()+4,p.getY()-5));
+            c = Line(Point(p.getX()-4,p.getY()-5),Point(p.getX()-4,p.getY()-9));
+            d = Line(Point(p.getX()-4,p.getY()-9),Point(p.getX()+4,p.getY()-9));
+            e = Line(Point(p.getX()+4,p.getY()-5),Point(p.getX()+4,p.getY()-9));
+            arr_Line.push_back(a);
+            arr_Line.push_back(b);
+            arr_Line.push_back(c);
+            arr_Line.push_back(d);
+            arr_Line.push_back(e);
+            (*this).setLineColor(Color::GREEN);
+            (*this).setThickness(1);
+        }
+
+        void movePolygon(int x, int y){
+            for(int i = 0; arr_Line.size(); i++){
+                arr_Line[i].moveLine(x, y);
+            }
+        }
+
+        void printPolygon(){
+            for (int i = 0; i < arr_Line.size(); ++i)
+            {
+                arr_Line[i].printLine();
+            }
+        }
+
+        void drawInside(FramePanel* panelNormal, FramePanel* panelZoom){
+            for(int i = 0; i < arr_Line.size(); i++){
+                Line * line;
+                line = arr_Line[i].checkInsideFrame(*panelNormal);
+                (*line).printLine();
+                if(line != NULL){
+                    (*line).draw(panelNormal);
+                    (*line).moveLine(((*panelNormal).getXMin()*(-1)), (-1)*((*panelNormal).getYMin()));
+                    (*line).scaleLine(2, 2);
+                    (*line).printLine();
+                    (*line).draw(panelZoom);
+                }
+            }
+        }
 
     private:
         std::vector<Line> arr_Line;
