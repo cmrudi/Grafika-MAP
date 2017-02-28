@@ -8,7 +8,7 @@
 int main(int argc, char** argv){
     FramePanel panelSmall(100, 100, 50, 50);
     FramePanel panelMain(550, 500, 0, 0);
-    FramePanel panelBig(500, 500, 500, 0);
+    FramePanel panelBig(500, 500, 550, 0);
     FramePanel panelMiniMap(100, 100, 250, 600);
     Framebuffer fp;
     Parser parse;
@@ -35,24 +35,24 @@ int main(int argc, char** argv){
             if(panelSmall.getXMin() > 10){
                 panelSmall.setXMin(panelSmall.getXMin() - 10);
             }
-        }else if(inp == 'w'){
-            if(panelSmall.getYMin() > 10){
+        }else if(inp == 's'){
+            if(panelSmall.getYMin() < panelMain.getYSize() - panelSmall.getYSize()){
                 panelSmall.setYMin(panelSmall.getYMin() + 10);
             }
         }else if (inp == 'd'){
-            if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
+            if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXSize()){
                 panelSmall.setXMin(panelSmall.getXMin() + 10);
             }
-        }else if(inp == 's'){
-            if(panelSmall.getYMin() < panelMain.getYSize() - panelSmall.getYMin()){
+        }else if(inp == 'w'){
+            if(panelSmall.getYMin() > 10){
                 panelSmall.setYMin(panelSmall.getYMin() - 10);
             }
         }else if(inp == 'z'){
-            panelSmall.setXSize(panelSmall.getXSize()+10);
-            panelSmall.setYSize(panelSmall.getYSize()+10);
-        }else if(inp == 'x'){
             panelSmall.setXSize(panelSmall.getXSize()-10);
             panelSmall.setYSize(panelSmall.getYSize()-10);
+        }else if(inp == 'x'){
+            panelSmall.setXSize(panelSmall.getXSize()+10);
+            panelSmall.setYSize(panelSmall.getYSize()+10);
         }else if(inp == 'e'){
             break;
         }else if(inp == 'b'){
