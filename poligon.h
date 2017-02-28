@@ -80,6 +80,18 @@ class Poligon : public Shape
             }
         }
 
+        void makeLineFromArrPoint(std::vector<Point>& P){
+            for(int i = 0; i<P.size(); i++){
+                Line l;
+                if(i == P.size()-1){
+                    l = Line(P[i], P[0]);
+                }else{
+                    l = Line(P[i], P[i+1]);
+                }
+                (*this).add(l);
+            }
+        }
+
     private:
         std::vector<Line> arr_Line;
         int thickness;
