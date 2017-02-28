@@ -149,8 +149,8 @@ class Poligon : public Shape
         void drawInside(FramePanel* panelNormal, FramePanel* panelZoom){
             for(int i = 0; i < arr_Line.size(); i++){
                 Line line;
-                int sx = (((*panelZoom).getXSize())/((*panelNormal).getXSize()));
-                int sy = (((*panelZoom).getYSize())/((*panelNormal).getYSize()));
+                float sx = (((*panelZoom).getXSize())/((*panelNormal).getXSize()));
+                float sy = (((*panelZoom).getYSize())/((*panelNormal).getYSize()));
                 bool a = arr_Line[i].checkInsideFrame(*panelNormal, &line);
                 if(a){
                     line.moveLine(((*panelNormal).getXMin()*(-1)), (-1)*((*panelNormal).getYMin()));

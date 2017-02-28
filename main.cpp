@@ -13,9 +13,9 @@ bool bRoad = false;
 bool bBuilding = false;
 Parser parse2;
 Framebuffer a;
-std::vector<std::vector<Point>> v;
+std::vector< std::vector<Point> > v;
 Parser parse;
-std::vector<std::vector<Point>> PJalan;
+std::vector< std::vector<Point> > PJalan;
 
 FramePanel panelSmall(100, 100, 50, 50);
 FramePanel panelBig(500, 500, 500, 0);
