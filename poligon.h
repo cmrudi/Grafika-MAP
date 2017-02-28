@@ -92,6 +92,38 @@ class Poligon : public Shape
             }
         }
 
+         void drawTree(Point p) {
+            Line a,b,c,d,e;
+
+            a = Line(p, Point(p.getX(),p.getY()-5));
+            b = Line(Point(p.getX()-4,p.getY()-5),Point(p.getX()+4,p.getY()-5));
+            c = Line(Point(p.getX()-4,p.getY()-5),Point(p.getX()-4,p.getY()-9));
+            d = Line(Point(p.getX()-4,p.getY()-9),Point(p.getX()+4,p.getY()-9));
+            e = Line(Point(p.getX()+4,p.getY()-5),Point(p.getX()+4,p.getY()-9));
+
+            a.setColor(LineColor);
+            a.setThickness(thickness);
+            b.setColor(LineColor);
+            b.setThickness(thickness);
+            c.setColor(LineColor);
+            c.setThickness(thickness);
+            d.setColor(LineColor);
+            d.setThickness(thickness);
+            e.setColor(LineColor);
+            e.setThickness(thickness);
+
+
+
+            arr_Line.push_back(a);
+            arr_Line.push_back(b);
+            arr_Line.push_back(c);
+            arr_Line.push_back(d);
+            arr_Line.push_back(e);
+
+        }
+
+
+
     private:
         std::vector<Line> arr_Line;
         int thickness;
