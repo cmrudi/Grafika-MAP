@@ -90,11 +90,11 @@ class Line : public Shape
         }
 
         void draw(FramePanel& a){
-            int xn=p1.getX(), yn=p1.getY() >= p2.getY() ? p2.getY() : p1.getY();
+            int xn=p1.getX(), yn=p1.getY();
             int dx=abs(p2.getX()-p1.getX());
             int dy=abs(p2.getY()-p1.getY());
             int p = 2*dy-dx;
-
+            int inp;
             if(dx!=0){
                 if (dx>dy){
                     for (int i=0;i<abs((p2.getX()-p1.getX()));i++){
@@ -134,15 +134,27 @@ class Line : public Shape
                             for(int j = 0; j < thick; j++)
                                 a.set(c,xn+k,yn+j);
                     }
+                    //scanf("%d", &inp);
                 }
             } else {
                 for (int i=0; i <dy; i++){
-                    for(int k = 0; k < thick; k++)
-                            for(int j = 0; j < thick; j++)
+                    for(int k = 0; k < thick; k++){
+                            for(int j = 0; j < thick; j++){
                                 a.set(c,xn+k,yn+j);
-                    yn++;
+                            }
+                    }   
+                    if(p2.getY() > p1.getY()){
+                        yn++;
+                    }else{
+                        yn--;
+                    }
                 }
             }
+        }
+
+        void scaleLine(float sx, float sy, const Point& center = Point()){
+            p1.Scale(sx, sy, center);
+            p2.Scale(sx, sy, center);
         }
 
 

@@ -81,8 +81,8 @@ public:
 	}
 
 	void Scale(float sx, float sy,const Point& center = Point()){
-		(*this).x = (*this).x + ((*this).x-center.x)*sx;
-		(*this).y = (*this).y + ((*this).y-center.y)*sy;
+		(*this).x = (*this).x + floor((float)((*this).x-center.x)*sx);
+		(*this).y = (*this).y + floor((float)((*this).y-center.y)*sy);
 	}
 
 private:

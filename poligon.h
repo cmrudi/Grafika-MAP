@@ -74,6 +74,12 @@ class Poligon : public Shape
             thickness = t;
         }
 
+        void scalePolygon(float sx, float sy, const  Point& center = Point()){
+            for(int i = 0; i < arr_Line.size(); i++){
+                arr_Line[i].scaleLine(sx, sy, center);
+            }
+        }
+
     private:
         std::vector<Line> arr_Line;
         int thickness;

@@ -22,25 +22,20 @@ int main(int argc, char** argv){
 
 
     Poligon p;
-    p.add(Line(Point(100,200), Point(150,200)));
-    p.add(Line(Point(150,200), Point(150,300)));
-    p.add(Line(Point(150,300), Point(200,400)));
-    p.add(Line(Point(200,400), Point(100,400)));
-    p.add(Line(Point(100,400), Point(100,200)));
+    p.add(Line(Point(100,100), Point(150,100)));
+    p.add(Line(Point(150,100), Point(150,300)));
+    p.add(Line(Point(150,300), Point(100,300)));
+    p.add(Line(Point(100,300), Point(100,100)));
 
     p.draw(b);
 
     a.drawFrame(b);
     a.Draw();
-    //printf("cat\n");
     sleep(10);
     p.setLineColor(Color::BLUE);
+    p.scalePolygon(1.5, 1.5);
     
-    p.draw(b);
-    sleep(100);
-   // printf("cat\n");
-    a.drawFrame(b);
-
+    p.draw(a);
     a.Draw();
 
     return 0;
