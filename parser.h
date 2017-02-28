@@ -12,11 +12,15 @@ using namespace std;
 class Parser {
 public :
 	void parse (string filename);
+	void parseAdi (string filename);
+	void parseTree (string filename);
 	vector< vector<Point> > getPoints ();
+	vector<Point> getTrees ();
 
 
 private :
 	vector< vector<Point> > points;
+	vector<Point> trees;
 };
 
 #endif
