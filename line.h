@@ -1,7 +1,7 @@
 #ifndef Line_H
 #define Line_H
 
-#include "../src/framebuffer.h"
+#include "framebuffer.h"
 #include "shape.h"
 
 class Line : public Shape

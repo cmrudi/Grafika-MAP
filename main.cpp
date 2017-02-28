@@ -10,8 +10,8 @@ int main(int argc, char** argv){
     c= Color::WHITE;
     Point ax(1,2);
     a.setColor(c, ax);
-    for(int i = 0; i<a.getXSize(); i++){
-        for(int j = 0; j<a.getYSize(); j++){
+    for(int i = 0; i<b.getXSize(); i++){
+        for(int j = 0; j<b.getYSize(); j++){
             a.setColor(c, i,j);
         }
     }
@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     a.Draw();
     sleep(10);
     p.setLineColor(Color::BLUE);
-    p.scalePolygon(1.5, 1.5);
+    //p.scalePolygon(1.5, 1.5);
     
     p.draw(a);
     a.Draw();
