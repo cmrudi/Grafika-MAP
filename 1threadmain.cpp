@@ -35,7 +35,7 @@ int main(int argc, char** argv){
             if(panelSmall.getXMin() > 10){
                 panelSmall.setXMin(panelSmall.getXMin() - 10);
             }
-        }else if(inp == 's'){
+        }else if(inp == 'w'){
             if(panelSmall.getYMin() > 10){
                 panelSmall.setYMin(panelSmall.getYMin() + 10);
             }
@@ -43,8 +43,8 @@ int main(int argc, char** argv){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
                 panelSmall.setXMin(panelSmall.getXMin() + 10);
             }
-        }else if(inp == 'w'){
-            if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
+        }else if(inp == 's'){
+            if(panelSmall.getYMin() < panelMain.getYSize() - panelSmall.getYMin()){
                 panelSmall.setYMin(panelSmall.getYMin() - 10);
             }
         }else if(inp == 'z'){
@@ -112,7 +112,7 @@ int main(int argc, char** argv){
         for(int i = 0; i < vPoligon.size(); i++){
             Poligon Shape = Poligon();
             Shape = vPoligon[i];
-            Shape.scalePolygon(0.3,0.3);
+            Shape.scalePolygon(0.25,0.25);
             Shape.draw(&panelMiniMap);
         }
 
