@@ -75,7 +75,6 @@ void drawTree(){
     for(int i = 0; i < PTree.size(); i++){
         Poligon Shape = Poligon();
         Shape.drawTree(PTree[i]);
-        vPoligon.push_back(Shape);
         Shape.draw(&panelMain);
     }
 }
@@ -84,7 +83,6 @@ void drawBuilding(){
     for(int i = 0; i < v.size(); i++){
         Poligon Shape = Poligon();
         Shape.makeLineFromArrPoint(v[i]);
-        vPoligon.push_back(Shape);
         Shape.draw(&panelMain);
     }   
 }
@@ -95,8 +93,33 @@ void drawRoad(){
         Shape.makeLineFromArrPoint(PJalan[i]);
         Shape.setLineColor(Color::RED);
         Shape.setAllLineColor();
-        vPoligon.push_back(Shape);
         Shape.draw(&panelMain);
+    }
+}
+
+void poliRoad(){
+    for(int i = 0; i < PJalan.size(); i++){
+        Poligon Shape = Poligon();
+        Shape.makeLineFromArrPoint(PJalan[i]);
+        Shape.setLineColor(Color::RED);
+        Shape.setAllLineColor();
+        vPoligon.push_back(Shape);
+    }
+}
+
+void poliBuild(){
+    for(int i = 0; i < v.size(); i++){
+        Poligon Shape = Poligon();
+        Shape.makeLineFromArrPoint(v[i]);
+        vPoligon.push_back(Shape);
+    }   
+}
+
+void poliPlant(){
+     for(int i = 0; i < PTree.size(); i++){
+        Poligon Shape = Poligon();
+        Shape.drawTree(PTree[i]);
+        vPoligon.push_back(Shape);
     }
 }
 
@@ -110,6 +133,9 @@ int main(int argc, char** argv){
     PTree = parse.getTrees();
     parse2.parseAdi("jalan.txt");
     PJalan = parse2.getPoints();
+    poliRoad();
+    poliPlant();
+    poliBuild();
 
 
     pthread_create(&t_bullet, NULL, controller, NULL);

@@ -149,14 +149,17 @@ class Poligon : public Shape
         void drawInside(FramePanel* panelNormal, FramePanel* panelZoom){
             for(int i = 0; i < arr_Line.size(); i++){
                 Line line;
-                int sx = (((*panelZoom).getXSize())/((*panelNormal).getXSize()));
-                int sy = (((*panelZoom).getYSize())/((*panelNormal).getYSize()));
+                float sx = ((float)((*panelZoom).getXSize())/(float)((*panelNormal).getXSize()));
+                float sy = ((float)((*panelZoom).getYSize())/(float)((*panelNormal).getYSize()));
                 bool a = arr_Line[i].checkInsideFrame(*panelNormal, &line);
                 if(a){
+                    //cout << "sebel";line.printLine();
                     line.moveLine(((*panelNormal).getXMin()*(-1)), (-1)*((*panelNormal).getYMin()));
                     line.draw(panelNormal);
+                    //cout << "sesud"; line.printLine();
                     line.scaleLine(sx, sy);
-                    line.draw(panelZoom);                    
+                    line.draw(panelZoom); 
+                    //cout << "sesud2"; line.printLine();                   
                 }
             }
         }
