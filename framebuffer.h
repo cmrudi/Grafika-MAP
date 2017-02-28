@@ -6,11 +6,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <map>
- #include <fcntl.h>
- #include <linux/fb.h>
- #include <sys/mman.h>
- #include <sys/ioctl.h>
- #include <vector>
+#include <fcntl.h>
+#include <linux/fb.h>
+#include <sys/mman.h>
+#include <sys/ioctl.h>
+#include <vector>
 
 class Point
 {

@@ -12,6 +12,7 @@ using namespace std;
 class Parser {
 public :
 	void parse (string filename);
+	void parseAdi (string filename);
 	vector< vector<Point> > getPoints ();
 
 
