@@ -123,6 +123,14 @@ class Poligon : public Shape
             arr_Line.push_back(e);
             (*this).setLineColor(Color::GREEN);
             (*this).setThickness(1);
+            
+            setAllLineColor();
+        }
+
+        void setAllLineColor(){
+            for(int i = 0; i<arr_Line.size(); i++){
+                arr_Line[i].setColor(LineColor);
+            }
         }
 
         void movePolygon(int x, int y){
@@ -140,15 +148,15 @@ class Poligon : public Shape
 
         void drawInside(FramePanel* panelNormal, FramePanel* panelZoom){
             for(int i = 0; i < arr_Line.size(); i++){
-                Line * line;
-                line = arr_Line[i].checkInsideFrame(*panelNormal);
-                (*line).printLine();
-                if(line != NULL){
-                    (*line).draw(panelNormal);
-                    (*line).moveLine(((*panelNormal).getXMin()*(-1)), (-1)*((*panelNormal).getYMin()));
-                    (*line).scaleLine(2, 2);
-                    (*line).printLine();
-                    (*line).draw(panelZoom);
+                Line line;
+                int sx = (((*panelZoom).getXSize())/((*panelNormal).getXSize()));
+                int sy = (((*panelZoom).getYSize())/((*panelNormal).getYSize()));
+                bool a = arr_Line[i].checkInsideFrame(*panelNormal, &line);
+                if(a){
+                    line.moveLine(((*panelNormal).getXMin()*(-1)), (-1)*((*panelNormal).getYMin()));
+                    line.draw(panelNormal);
+                    line.scaleLine(sx, sy);
+                    line.draw(panelZoom);                    
                 }
             }
         }

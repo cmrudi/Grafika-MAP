@@ -81,9 +81,11 @@ public:
 	}
 
 	void Scale(float sx, float sy,const Point& center = Point()){
-		(*this).x = (*this).x + floor((float)((*this).x-center.x)*sx);
-		(*this).y = (*this).y + floor((float)((*this).y-center.y)*sy);
+		(*this).x = center.x + floor((float)((*this).x-center.x)*sx);
+		(*this).y = center.y + floor((float)((*this).y-center.y)*sy);
 	}
+
+	// void ScaleClip(float sx, float sy, int x1, int x2)
 
 	void printPoint(){
 		std::cout << x << " " << y << " ";
@@ -363,7 +365,7 @@ public:
 
 	     setXSize(vinfo.xres_virtual-10);
 	     setYSize(vinfo.yres_virtual-10);
-
+	     EmptyFrame();
 
 
 	     // Map the device to memory

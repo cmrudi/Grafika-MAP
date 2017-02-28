@@ -17,6 +17,10 @@ std::vector<std::vector<Point>> v;
 Parser parse;
 std::vector<std::vector<Point>> PJalan;
 
+FramePanel panelSmall(100, 100, 50, 50);
+FramePanel panelBig(500, 500, 500, 0);
+FramePanel panelMiniMap(100, 100, 250, 600);
+
 void *controller(void *args){
     while(1){
         char c;
@@ -38,6 +42,31 @@ void *controller(void *args){
         }
         if (c == 'x'){
             bBuilding = false;
+        }
+        if(c == 'j'){
+            if(panelSmall.getXMin() > 10){
+                panelSmall.setXMin(panelSmall.getXMin() - 10);
+            }
+        }else if(c == 'k'){
+            if(panelSmall.getYMin() > 10){
+                panelSmall.setYMin(panelSmall.getYMin() + 10);
+            }
+        }else if (c == 'l'){
+            if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
+                panelSmall.setXMin(panelSmall.getXMin() + 10);
+            }
+        }else if(c == 'i'){
+            if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
+                panelSmall.setYMin(panelSmall.getYMin() - 10);
+            }
+        }else if(c == 'b'){
+            panelSmall.setXSize(panelSmall.getXSize()+10);
+            panelSmall.setYSize(panelSmall.getYSize()+10);
+        }else if(c == 'n'){
+            panelSmall.setXSize(panelSmall.getXSize()-10);
+            panelSmall.setYSize(panelSmall.getYSize()-10);
+        }else if(c == 'm'){
+            break;
         }
     }
 }
@@ -65,6 +94,7 @@ void drawRoad(){
         Poligon Shape = Poligon();
         Shape.makeLineFromArrPoint(PJalan[i]);
         Shape.setLineColor(Color::RED);
+        Shape.setAllLineColor();
         vPoligon.push_back(Shape);
         Shape.draw(&panelMain);
     }
@@ -73,9 +103,7 @@ void drawRoad(){
 int main(int argc, char** argv){
 
 
-    FramePanel panelSmall(100, 100, 50, 50);
-    FramePanel panelBig(500, 500, 500, 0);
-    FramePanel panelMiniMap(100, 100, 250, 600);
+   
     parse.parseAdi("bangunan.txt");
     parse.parseTree("tree.txt");
     v = parse.getPoints();
@@ -100,31 +128,29 @@ int main(int argc, char** argv){
             drawRoad();
         }
 
-    
+        //Minimap
+        for(int i = 0; i < vPoligon.size(); i++){
+            Poligon Shape = Poligon();
+            Shape = vPoligon[i];
+            Shape.scalePolygon(0.5,0.5);
+            Shape.draw(&panelMiniMap);
+        }
+        
+        //ZoomSelector
+        for(int i = 0; i<vPoligon.size();i++){
+            vPoligon[i].drawInside(&panelSmall, &panelBig);
+        }
 
+        //draw semua
+        a.drawFrame(panelMain);
+        a.drawFrame(panelMiniMap);
+        a.drawFrame(panelBig);
+        a.drawFrame(panelSmall);
+        a.Draw();
 
-    //Minimap
-    cout << vPoligon.size() << endl;
-    for(int i = 0; i < vPoligon.size(); i++){
-        Poligon Shape = Poligon();
-        Shape = vPoligon[i];
-        Shape.scalePolygon(-0.8,-0.8);
-        Shape.draw(&panelMiniMap);
-    }
-
-    //ZoomSelector
-    for(int i = 0; i<vPoligon.size();i++){
-        //vPoligon[i].drawInside(&panelSmall, &panelBig);
-    }
-
-    //draw semua
-    a.drawFrame(panelMain);
-    a.drawFrame(panelMiniMap);
-    a.drawFrame(panelBig);
-    a.drawFrame(panelSmall);
-    a.Draw();
-
-    panelMain.EmptyFrame();
+        panelMain.EmptyFrame();
+        panelSmall.EmptyFrame();
+        panelBig.EmptyFrame();
     }
     pthread_join(t_bullet, NULL);
 
