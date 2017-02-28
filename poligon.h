@@ -92,6 +92,8 @@ class Poligon : public Shape
             }
         }
 
+        
+
     private:
         std::vector<Line> arr_Line;
         int thickness;

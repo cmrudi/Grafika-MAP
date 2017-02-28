@@ -6,11 +6,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <map>
- #include <fcntl.h>
- #include <linux/fb.h>
- #include <sys/mman.h>
- #include <sys/ioctl.h>
- #include <vector>
+#include <fcntl.h>
+#include <linux/fb.h>
+#include <sys/mman.h>
+#include <sys/ioctl.h>
+#include <vector>
 
 class Point
 {
@@ -303,9 +303,16 @@ public:
 		for(int i = 0; i < sizex; i++){
 			for(int j = 0; j<sizey; j++){
 				M[i][j] = Color(-1,-1,-1);
+				if(i == xmin || i == sizex){
+					M[i][j] = Color::WHITE;
+				}
+				if(j == ymin || j == sizey){
+					M[i][j] = Color::WHITE;
+				}
 			}
 		}
-	}    
+	}
+
 
 
 private:
@@ -439,6 +446,8 @@ public:
 			}
 		}  
     }
+
+    
 
 
 private:
