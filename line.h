@@ -45,6 +45,17 @@ class Line : public Shape
             thick = thickness;
         }
 
+        Line& operator= (const Line& l){
+            p1 = l.p1;
+            p2 = l.p2;
+            c = l.c;
+            thick = l.thick;
+
+            return (*this);
+        }
+
+
+
         Point getP1(){
             return p1;
         }
@@ -157,7 +168,7 @@ class Line : public Shape
             p2.Scale(sx, sy, center);
         }
 
-            static const int INSIDE; // 0000
+    static const int INSIDE; // 0000
     static const int LEFT;   // 0001
     static const int RIGHT;  // 0010
     static const int BOTTOM; // 0100
@@ -248,13 +259,26 @@ class Line : public Shape
             if (accept) {
                 Point p_1 = Point(x0, y0);
                 Point p_2 = Point(x1, y1);
-                return new Line(p_1, p_2);
+                Line * line = new Line(p_1, p_2);
+                (*line).printLine();
+                return line;
             }else{
                 return NULL;
             }
     }
 
-       
+    void moveLine(int x, int y){
+        p1.setX(p1.getX()+x);
+        p1.setY(p1.getY()+y);
+        p2.setX(p2.getX()+x);
+        p2.setY(p2.getY()+y);
+    }
+
+    void printLine(){
+        p1.printPoint();
+        p2.printPoint();
+        printf("\n");
+    }
 
     private:
         Point p1, p2;

@@ -85,6 +85,10 @@ public:
 		(*this).y = (*this).y + floor((float)((*this).y-center.y)*sy);
 	}
 
+	void printPoint(){
+		std::cout << x << " " << y << " ";
+	}
+
 private:
 	int x;
 	int y;
@@ -436,7 +440,7 @@ public:
     	int xsize = f.getXSize();
     	int ysize = f.getYSize();
     	int xmin = f.getXMin();
-    	int ymin = f.getXMin();
+    	int ymin = f.getYMin();
 		for(int i = 0; i < xsize;i++){
 			for(int j = 0; j<ysize; j++){
 				set(f.get(i, j), i+xmin, j+ymin);

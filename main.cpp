@@ -12,7 +12,7 @@ int main(int argc, char** argv){
     FramePanel panelMiniMap(100, 100, 250, 600);
     Framebuffer a;
     Parser parse;
-    parse.parseAdi("bgn.octet-stream");
+    parse.parseAdi("bangunan.txt");
     parse.parseTree("tree.txt");
     std::vector<Poligon> vPoligon;
     std::vector<std::vector<Point>> v;
@@ -43,6 +43,18 @@ int main(int argc, char** argv){
         Shape = vPoligon[i];
         Shape.scalePolygon(-0.8,-0.8);
         Shape.draw(&panelMiniMap);
+    }
+
+    Parser parse2;
+    parse2.parseAdi("jalan.txt");
+    std::vector<std::vector<Point>> PJalan;
+    PJalan = parse2.getPoints();
+    for(int i = 0; i < PJalan.size(); i++){
+        Poligon Shape = Poligon();
+        Shape.makeLineFromArrPoint(PJalan[i]);
+        Shape.setLineColor(Color::RED);
+        vPoligon.push_back(Shape);
+        Shape.draw(&panelMain);
     }
 
     //ZoomSelector
