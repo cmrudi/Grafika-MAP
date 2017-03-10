@@ -75,9 +75,19 @@ public:
 	}
 
 	void rotateP(double degrees, const Point& center = Point()){
-        double rad = degrees * 3.14/180;
-        (*this).x = center.x + ((*this).x-center.x)*cos(rad) - ((*this).y - center.y)*sin(rad);
-        (*this).y = center.y + ((*this).x-center.x)*sin(rad) + ((*this).y-center.y)*cos(rad);
+		double rad_angle = degrees * 3.14 / 180;
+		// printf("%f\n",rad_angle);
+		//translate to origin
+		double dx = this->x - center.x;
+		double dy = this->y - center.y;
+		// printf("%f %f\n", dx,dy);
+		//rotate point
+		double new_dx = (dx) * cos(rad_angle) - (dy) * sin(rad_angle);
+		double new_dy = (dx) * sin(rad_angle) + (dy) * cos(rad_angle);
+		// printf("%f %f\n", dx,dy);
+
+		this->x = (int)round(new_dx) + center.x;
+		this->y = (int)round(new_dy) + center.y;
 	}
 
 	void Scale(float sx, float sy,const Point& center = Point()){
@@ -132,6 +142,14 @@ public:
         a = c.a;
 
         return *this;
+	}
+
+	bool operator==(const Color &c){
+        return (this->r == c.r && this->g == c.g && this->b == c.b);
+	}
+
+	bool operator!=(const Color &c){
+        return !operator==(c);
 	}
 
 	char getR()
@@ -218,7 +236,7 @@ public:
     	(*this).ymin = ymin;
     	setXSize(x);
     	setYSize(y);
-    	EmptyFrame(); 
+    	EmptyFrame();
     }
 
     FramePanel(FramePanel& _f){
@@ -447,10 +465,10 @@ public:
 			for(int j = 0; j<ysize; j++){
 				set(f.get(i, j), i+xmin, j+ymin);
 			}
-		}  
+		}
     }
 
-    
+
 
 
 private:
