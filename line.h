@@ -114,7 +114,8 @@ class Line : public Shape
             int dx=abs(p2.getX()-p1.getX());
             int dy=abs(p2.getY()-p1.getY());
             int p = 2*dy-dx;
-            int inp;
+            a->set(c, xn, yn);
+            a->set(c, p2.getX(), p2.getY());
             if(dx!=0){
                 if (dx>dy){
                     for (int i=0;i<abs((p2.getX()-p1.getX()));i++){
@@ -199,7 +200,7 @@ class Line : public Shape
                                 }
                                 (*a).set(c,xn+k,yn+j);
                             }
-                    }   
+                    }
                     if(p2.getY() > p1.getY()){
                         yn++;
                     }else{
@@ -333,16 +334,21 @@ class Line : public Shape
             printf("\n");
         }
 
+        void rotateLine(int degree, Point &center_point) {
+            p1.rotateP(degree, center_point);
+            p2.rotateP(degree, center_point);
+        }
+
     private:
         Point p1, p2;
         Color c;
         int thick;
 };
 
-const int Line::INSIDE = 0; 
-const int Line::LEFT = 1;   
-const int Line::RIGHT = 2;  
-const int Line::BOTTOM = 4; 
-const int Line::TOP = 8;    
+const int Line::INSIDE = 0;
+const int Line::LEFT = 1;
+const int Line::RIGHT = 2;
+const int Line::BOTTOM = 4;
+const int Line::TOP = 8;
 
 #endif // Line_H

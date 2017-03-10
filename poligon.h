@@ -30,6 +30,41 @@ class Poligon : public Shape
             return (*this);
         }
 
+        void erase_fill_color(int x, int y, FramePanel *panel) {
+            stack<Point> queue;
+            Point point_todo(x, y), current_point;
+            queue.push(point_todo);
+
+            while (!queue.empty()) {
+                current_point = queue.top();
+                // current_point.printPoint();
+                // printf("\n");
+                queue.pop();
+                if ((panel->get(current_point) != Color::BLACK)) {
+                    // printf("here\n");
+                    panel->set(Color::BLACK, current_point);
+
+                    point_todo = current_point;
+                    point_todo.Move(1,0);
+                    queue.push(point_todo);
+
+                    point_todo = current_point;
+                    point_todo.Move(0,1);
+                    queue.push(point_todo);
+
+                    point_todo = current_point;
+                    point_todo.Move(-1,0);
+                    queue.push(point_todo);
+
+                    point_todo = current_point;
+                    point_todo.Move(0,-1);
+                    queue.push(point_todo);
+                } else {
+                    // printf("black\n");
+                }
+            }
+        }
+
         void draw_fill_color(int x, int y, FramePanel *panel) {
             stack<Point> queue;
             Point point_todo(x, y), current_point;
@@ -88,6 +123,16 @@ class Poligon : public Shape
             return temp;
         }
 
+        void erase(FramePanel *a) {
+            for(unsigned int i = 0;i<arr_Line.size();i++){
+                Line ax;
+                ax = arr_Line[i];
+                ax.setColor(Color::BLACK);
+                ax.setThickness(thickness);
+                ax.draw(a);
+            }
+        }
+
         void draw(FramePanel* a){
             for(unsigned int i = 0;i<arr_Line.size();i++){
                 Line ax;
@@ -129,7 +174,7 @@ class Poligon : public Shape
         }
 
         void makeLineFromArrPoint(std::vector<Point>& P){
-            for(int i = 0; i<P.size(); i++){
+            for(unsigned int i = 0; i<P.size(); i++){
                 Line l;
                 if(i == P.size()-1){
                     l = Line(P[i], P[0]);
@@ -160,13 +205,13 @@ class Poligon : public Shape
         }
 
         void setAllLineColor(){
-            for(int i = 0; i<arr_Line.size(); i++){
+            for(unsigned int i = 0; i<arr_Line.size(); i++){
                 arr_Line[i].setColor(LineColor);
             }
         }
 
         void movePolygon(int x, int y){
-            for(int i = 0; arr_Line.size(); i++){
+            for(int i = 0; i < arr_Line.size(); i++){
                 arr_Line[i].moveLine(x, y);
             }
         }
@@ -198,10 +243,10 @@ class Poligon : public Shape
 
         void rotate(int degree, Point &center_point) {
             for (unsigned int i = 0; i < arr_Line.size(); i++) {
-                printf("before "); arr_Line[i].printLine();
+                // printf("before "); arr_Line[i].printLine();
                 arr_Line[i].rotateLine(degree, center_point);
 
-                printf("after ");arr_Line[i].printLine();
+                // printf("after ");arr_Line[i].printLine();
             }
         }
 
