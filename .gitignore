@@ -1,1 +1,7 @@
-*.gch
+*
+!.gitattributes
+!.gitignore
+!*.cpp
+!*.c
+!*.h
+!*/
