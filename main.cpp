@@ -56,8 +56,8 @@ void *controller(void *args){
 int main(int argc, char** argv){
 
     // Read Text File
-    parse.parseTree("maze_point_2.txt");
-    parse2.parseTree("maze_point.txt");
+    parse.parseTree("object/maze_point_2.txt");
+    parse2.parseTree("object/maze_point.txt");
     PTree = parse.getTrees();
     PTree2 = parse2.getTrees();
     /////////////////////////////////////
