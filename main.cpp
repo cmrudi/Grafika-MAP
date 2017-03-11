@@ -4,7 +4,9 @@
 #include "poligon.h"
 #include "parser.h"
 #include <pthread.h>
+#include <termios.h>
 
+static struct termios oldt;
 std::vector<Point> PTree;
 std::vector<Point> PTree2;
 FramePanel panelMain(700, 700, 0, 0);
@@ -24,19 +26,19 @@ void *controller(void *args){
 
         if(c == 'j'){
             if(panelSmall.getXMin() > 10){
-                panelSmall.setXMin(panelSmall.getXMin() - 10);
+                panelSmall.setXMin(panelSmall.getXMin() - 2);
             }
         }else if(c == 'k'){
             if(panelSmall.getYMin() > 10){
-                panelSmall.setYMin(panelSmall.getYMin() + 10);
+                panelSmall.setYMin(panelSmall.getYMin() + 2);
             }
         }else if (c == 'l'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
-                panelSmall.setXMin(panelSmall.getXMin() + 10);
+                panelSmall.setXMin(panelSmall.getXMin() + 2);
             }
         }else if(c == 'i'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-                panelSmall.setYMin(panelSmall.getYMin() - 10);
+                panelSmall.setYMin(panelSmall.getYMin() - 2);
             }
         }else if(c == 'b'){
             panelSmall.setXSize(panelSmall.getXSize()+10);
@@ -44,14 +46,24 @@ void *controller(void *args){
         }else if(c == 'n'){
             panelSmall.setXSize(panelSmall.getXSize()-10);
             panelSmall.setYSize(panelSmall.getYSize()-10);
-        }else if(c == 'm'){
-            break;
         }
     }
 }
 
+void restore_terminal_settings(void) {
+	tcsetattr(0, TCSANOW, &oldt);  /* Apply saved settings */
+}
 
+void disable_waiting_for_enter(void) {
+    struct termios newt;
 
+    /* Make terminal read 1 char at a time */
+    tcgetattr(0, &oldt);  /* Save terminal settings */
+    newt = oldt;  /* Init new settings */
+    newt.c_lflag &= ~(ICANON | ECHO);  /* Change settings */
+    tcsetattr(0, TCSANOW, &newt);  /* Apply settings */
+    atexit(restore_terminal_settings); /* Make sure settings will be restored when program ends  */
+}
 
 int main(int argc, char** argv){
 
@@ -78,10 +90,9 @@ int main(int argc, char** argv){
     p.scalePolygon(0.75,0.75);
 
     while(1) {
+		disable_waiting_for_enter();
          //ZoomSelector
         p.drawInside(&panelSmall, &panelBig);
-
-
 
         p.draw(&panelMain);
         a.drawFrame(panelMain);
