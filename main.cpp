@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include "poligon.h"
 #include "parser.h"
+#include "player.h"
 #include <pthread.h>
 #include <termios.h>
+#include <thread>
+
 
 static struct termios oldt;
 std::vector<Point> PTree;
@@ -17,7 +20,7 @@ Parser parse;
 Parser parse2;
 Poligon p;
 pthread_t t_control;
-
+Player player(100,100,0,255,0,&panelMain,&a);	
 
 void *controller(void *args){
     while(1){
@@ -27,18 +30,22 @@ void *controller(void *args){
         if(c == 'j'){
             if(panelSmall.getXMin() > 10){
                 panelSmall.setXMin(panelSmall.getXMin() - 2);
+                player.update_player(-10, 0, 3);
             }
         }else if(c == 'k'){
             if(panelSmall.getYMin() > 10){
                 panelSmall.setYMin(panelSmall.getYMin() + 2);
+                player.update_player(0, 10, 2);
             }
         }else if (c == 'l'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
                 panelSmall.setXMin(panelSmall.getXMin() + 2);
+                player.update_player(10, 0, 1);
             }
         }else if(c == 'i'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
                 panelSmall.setYMin(panelSmall.getYMin() - 2);
+                player.update_player(0, -10, 0);
             }
         }else if(c == 'b'){
             panelSmall.setXSize(panelSmall.getXSize()+10);
@@ -80,7 +87,7 @@ int main(int argc, char** argv){
         p.add(Line(PTree[i-1],PTree[i]));
     }
     p.add(Line(PTree[0],PTree[PTree.size()-1]));
-    for(int i = 1; i < PTree.size(); i++){
+    for(int i = 1; i < PTree2.size(); i++){
         p.add(Line(PTree2[i-1],PTree2[i]));
     }
     p.add(Line(PTree2[0],PTree2[PTree2.size()-1]));
@@ -89,15 +96,20 @@ int main(int argc, char** argv){
     pthread_create(&t_control, NULL, controller, NULL);
     p.scalePolygon(0.75,0.75);
 
+	a.EmptyScreen();
     while(1) {
 		disable_waiting_for_enter();
          //ZoomSelector
         p.drawInside(&panelSmall, &panelBig);
+        player.player_shape.drawInside(&panelSmall, &panelBig);
 
         p.draw(&panelMain);
-        a.drawFrame(panelMain);
+        player.player_shape.draw(&panelMain);
+        //a.drawFrame(panelMain);
         a.drawFrame(panelBig);
         a.drawFrame(panelSmall);
+        
+        //player.draw_player();
         a.Draw();
 
         panelMain.EmptyFrame();

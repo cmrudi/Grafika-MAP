@@ -38,7 +38,7 @@ public:
         int new_direction;
         while(1){
             char c;
-            c = getch();
+            c = getchar();
             if (c == 'w'){
                 // printf("WWWWWWWWWWWWWW\n");
                 new_direction = 0;
@@ -66,8 +66,7 @@ public:
         }
     }
 
-private:
-    char getch() {
+    /*char getch() {
         char buf = 0;
         struct termios old = {0};
         if (tcgetattr(0, &old) < 0)
@@ -85,7 +84,7 @@ private:
         if (tcsetattr(0, TCSADRAIN, &old) < 0)
                 perror ("tcsetattr ~ICANON");
         return (buf);
-    }
+    }*/
 
     void update_player(int move_x, int move_y, int new_dir) {
         rotate_player(new_dir);
@@ -103,7 +102,8 @@ private:
         }
         player_center_point.Move(move_x, move_y);
         draw_player();
-        usleep(500);
+        usleep(5);
+        //usleep(500);
     }
 
     void draw_player() {
@@ -128,7 +128,8 @@ private:
                 erase_player();
                 player_shape.rotate(10 * inc, player_center_point);
                 draw_player();
-                usleep(500);
+                usleep(5);
+				//usleep(500);
             }
             player_direction += inc;
         }

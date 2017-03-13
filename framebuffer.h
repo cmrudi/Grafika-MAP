@@ -11,6 +11,9 @@
 #include <sys/mman.h>
 #include <sys/ioctl.h>
 #include <vector>
+#include <iostream>
+
+using namespace std;
 
 class Point
 {
@@ -334,10 +337,10 @@ public:
 		}
 	}
 
-
+	std::vector<std::vector<Color> > M;
 
 private:
-    std::vector<std::vector<Color> > M;
+    
     int sizex, sizey;
     int xmin, ymin;
 };
@@ -381,8 +384,10 @@ public:
 	     // Figure out the size of the screen in bytes
 	     screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 
-	     setXSize(vinfo.xres_virtual-10);
-	     setYSize(vinfo.yres_virtual-10);
+	     //setXSize(vinfo.xres_virtual-10);
+	     //setYSize(vinfo.yres_virtual-10);
+	     setXSize(1300);
+	     setYSize(700);
 	     EmptyFrame();
 
 
