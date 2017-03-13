@@ -1,4 +1,4 @@
-#include <ncurses.h>
+// #include <ncurses.h>
 #include <iostream>
 #include <stdio.h>
 #include "poligon.h"
@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <termios.h>
 #include <thread>
+#include <stdlib.h>
 #define DELTA_GERAK 2
 
 
@@ -93,10 +94,23 @@ int main(int argc, char** argv){
     }
     p.add(Line(PTree2[0],PTree2[PTree2.size()-1]));
     //////////////////////////////////////
+    // a.EmptyScreen();
+    p.scalePolygon(0.75,0.75);
+    p.setfill_color(Color::BLUE);
+
+    p.draw(&panelMain);
+    p.draw_fill_color(28,28, &panelMain);
+    p.draw_fill_color(617,600, &panelMain);
+
+    p.draw(&panelMain);
+    a.drawFrame(panelMain);
+    // a.set(Color::GREEN, 617,600);
+    a.Draw();
+    // usleep(100000000);
+
 
     pthread_create(&t_control, NULL, controller, NULL);
-    p.scalePolygon(0.75,0.75);
-	a.EmptyScreen();
+
     while(1) {
 		disable_waiting_for_enter();
          //ZoomSelector
@@ -113,7 +127,7 @@ int main(int argc, char** argv){
         //player.draw_player();
         a.Draw();
 
-        panelMain.EmptyFrame();
+        // panelMain.EmptyFrame();
         panelSmall.EmptyFrame();
         panelBig.EmptyFrame();
     }
