@@ -280,10 +280,10 @@ int main(int argc, char** argv){
 
     while(1) {
 		disable_waiting_for_enter();
-		
+
 		// Read Enemy File
-		if (x1 > 150) { 
-			x1--; 
+		if (x1 > 150) {
+			x1--;
 		}
 		else if (x1 < 200) {
 			x1++;
@@ -294,7 +294,7 @@ int main(int argc, char** argv){
 			p.add(Line(Enemy1[i-1],Enemy1[i]));
 		}
 		p.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
-		
+
          //ZoomSelector
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
