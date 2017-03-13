@@ -119,19 +119,21 @@ public:
     }
 
     void rotate_player(int new_dir) {
+        // printf("\033[%d;%dH", 100, 0); printf("rotate old %d | new %d\n", this->player_direction, new_dir); printf("\033[%d;%dH", 0, 0);
+
         int inc = 1;
-        if (player_direction > new_dir)
+        if (this->player_direction > new_dir)
             inc = -1;
 
-        while (player_direction != new_dir) {
-            for (int i = 0; i < 9; i++) {
+        while (this->player_direction != new_dir) {
+            for (int i = 0; i < 6; i++) {
                 erase_player();
-                player_shape.rotate(10 * inc, player_center_point);
+                player_shape.rotate(15 * inc, player_center_point);
                 draw_player();
                 usleep(5);
 				//usleep(500);
             }
-            player_direction += inc;
+            this->player_direction += inc;
         }
     }
 

@@ -45,6 +45,27 @@ void initializePriorMatrix () {
     }
 }
 
+char getch() {
+    char buf = 0;
+    struct termios old = {0};
+    if (tcgetattr(0, &old) < 0)
+            perror("tcsetattr()");
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
+    if (tcsetattr(0, TCSANOW, &old) < 0)
+            perror("tcsetattr ICANON");
+    if (read(0, &buf, 1) < 0)
+            perror ("read()");
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
+    if (tcsetattr(0, TCSADRAIN, &old) < 0)
+            perror ("tcsetattr ~ICANON");
+    printf("\033[%d;%dH", 100, 0);
+    return (buf);
+}
+
 void drawWhitePointPrior(int x1, int y1, int prior) {
     if (x1 < 0 || x1 >= WIDTH || y1 < 0 || y1 >= HEIGHT) return;
     redPixelMatrix[x1][y1][prior] = 255;
@@ -182,9 +203,10 @@ void drawPanelWin() {
 }
 
 void *controller(void *args){
+
+    char c;
     while(1){
-        char c;
-        c = getchar();
+        c = getch();
 
         if(c == 'a'){
             if(panelSmall.getXMin() > 10){
@@ -192,28 +214,26 @@ void *controller(void *args){
 					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                 player.update_player(-DELTA_GERAK, 0, 3);
             }
-            printf("x: %d\n", panelSmall.getXMin());
+            // printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 's'){
-            if(panelSmall.getYMin() > 10){
+            if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
 				if (player.is_move_valid(0, DELTA_GERAK))
 					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                 player.update_player(0, DELTA_GERAK, 2);
             }
-            printf("y: %d\n", panelSmall.getYMin());
+            // printf("y: %d\n", panelSmall.getYMin());
         }else if (c == 'd'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
 				if (player.is_move_valid(DELTA_GERAK, 0))
 					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                 player.update_player(DELTA_GERAK, 0, 1);
             }
-            printf("x: %d\n", panelSmall.getXMin());
+            // printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 'w'){
-            if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-				if (player.is_move_valid(0, -DELTA_GERAK))
+            	if (player.is_move_valid(0, -DELTA_GERAK))
 					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                 player.update_player(0, -DELTA_GERAK, 0);
-            }
-            printf("y: %d\n", panelSmall.getYMin());
+            // printf("y: %d\n", panelSmall.getYMin());
         }else if(c == 'b'){
             panelSmall.setXSize(panelSmall.getXSize()+10);
             panelSmall.setYSize(panelSmall.getYSize()+10);
@@ -275,11 +295,17 @@ int main(int argc, char** argv){
     drawWin();
     drawPanelWin();
 
+    enemy1.parseEnemy("object/enemy1.txt", x1, 35);
+    Enemy1 = enemy1.getTrees();
+    for(int i = 1; i < Enemy1.size(); i++){
+        p.add(Line(Enemy1[i-1],Enemy1[i]));
+    }
+    p.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
 
     pthread_create(&t_control, NULL, controller, NULL);
 
     while(1) {
-		disable_waiting_for_enter();
+		//disable_waiting_for_enter();
 
 		// Read Enemy File
 		if (x1 > 150) {
@@ -288,12 +314,6 @@ int main(int argc, char** argv){
 		else if (x1 < 200) {
 			x1++;
 		}
-		enemy1.parseEnemy("object/enemy1.txt", x1, 35);
-		Enemy1 = enemy1.getTrees();
-		for(int i = 1; i < Enemy1.size(); i++){
-			p.add(Line(Enemy1[i-1],Enemy1[i]));
-		}
-		p.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
 
          //ZoomSelector
         p.drawInside(&panelSmall, &panelBig);
