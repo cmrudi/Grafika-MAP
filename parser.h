@@ -101,6 +101,24 @@ public :
 		}
 		input_file.close();
 	}
+	void parseEnemy (string filename, int x, int y){
+		ifstream input_file(filename.c_str());
+
+		Point p;
+		int a;
+
+		if (input_file.is_open()) {
+			while ( input_file.good() ) {
+				while (input_file >> a) {
+					p.setX(a+x);
+					input_file >> a;
+					p.setY(a+y);
+					trees.push_back(p);
+				}
+			}
+		}
+		input_file.close();
+	}
 	vector< vector<Point> > getPoints (){
 		return points;
 	}

@@ -26,7 +26,7 @@ public:
             player_shape.add(l);
         }
         player_shape.setLineColor(c);
-        player_shape.setfill_color(c);
+        //player_shape.setfill_color(c);
         player_direction = 0;
     }
 
@@ -108,14 +108,14 @@ public:
 
     void draw_player() {
         player_shape.draw(panel);
-        player_shape.draw_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
+        //player_shape.draw_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
         fb->drawFrame(*panel);
         fb->Draw();
     }
 
     void erase_player() {
         player_shape.erase(panel);
-        player_shape.erase_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
+        //player_shape.erase_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
     }
 
     void rotate_player(int new_dir) {
