@@ -26,7 +26,7 @@ public:
             player_shape.add(l);
         }
         player_shape.setLineColor(c);
-        player_shape.setfill_color(c);
+        //player_shape.setfill_color(c);
         player_direction = 0;
     }
 
@@ -115,7 +115,7 @@ public:
 
     void erase_player() {
         player_shape.erase(panel);
-        player_shape.erase_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
+        //player_shape.erase_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
     }
 
     void rotate_player(int new_dir) {

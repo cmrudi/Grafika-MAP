@@ -105,6 +105,10 @@ class Poligon : public Shape
             a.setThickness(thickness);
             arr_Line.push_back(a);
         }
+        
+        void del() {
+			arr_Line.pop_back();
+		}
 
         Line* getP(unsigned int i){
             if(i < arr_Line.size()){

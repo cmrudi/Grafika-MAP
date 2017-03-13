@@ -16,6 +16,7 @@
 static struct termios oldt;
 std::vector<Point> PTree;
 std::vector<Point> PTree2;
+std::vector<Point> Enemy1;
 FramePanel panelMain(700, 700, 0, 0);
 FramePanel panelSmall(100, 100, 0, 300);
 FramePanel panelBig(500, 500, 750, 0);
@@ -23,8 +24,10 @@ FramePanel panelWin(521,241,340,400);
 Framebuffer a;
 Parser parse;
 Parser parse2;
+Parser enemy1;
 Poligon p;
 pthread_t t_control;
+int x1 = 200;
 Player player(30,350,0,255,0,&panelMain,&a);
 int redPixelMatrix[WIDTH][HEIGHT][2];
 int greenPixelMatrix[WIDTH][HEIGHT][2];
@@ -183,30 +186,34 @@ void *controller(void *args){
         char c;
         c = getchar();
 
-        if(c == 'j'){
+        if(c == 'a'){
             if(panelSmall.getXMin() > 10){
 				if (player.is_move_valid(-DELTA_GERAK, 0))
 					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                 player.update_player(-DELTA_GERAK, 0, 3);
             }
-        }else if(c == 'k'){
+            printf("x: %d\n", panelSmall.getXMin());
+        }else if(c == 's'){
             if(panelSmall.getYMin() > 10){
 				if (player.is_move_valid(0, DELTA_GERAK))
 					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                 player.update_player(0, DELTA_GERAK, 2);
             }
-        }else if (c == 'l'){
+            printf("y: %d\n", panelSmall.getYMin());
+        }else if (c == 'd'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
 				if (player.is_move_valid(DELTA_GERAK, 0))
 					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                 player.update_player(DELTA_GERAK, 0, 1);
             }
-        }else if(c == 'i'){
+            printf("x: %d\n", panelSmall.getXMin());
+        }else if(c == 'w'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
 				if (player.is_move_valid(0, -DELTA_GERAK))
 					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                 player.update_player(0, -DELTA_GERAK, 0);
             }
+            printf("y: %d\n", panelSmall.getYMin());
         }else if(c == 'b'){
             panelSmall.setXSize(panelSmall.getXSize()+10);
             panelSmall.setYSize(panelSmall.getYSize()+10);
@@ -273,6 +280,21 @@ int main(int argc, char** argv){
 
     while(1) {
 		disable_waiting_for_enter();
+		
+		// Read Enemy File
+		if (x1 > 150) { 
+			x1--; 
+		}
+		else if (x1 < 200) {
+			x1++;
+		}
+		enemy1.parseEnemy("object/enemy1.txt", x1, 35);
+		Enemy1 = enemy1.getTrees();
+		for(int i = 1; i < Enemy1.size(); i++){
+			p.add(Line(Enemy1[i-1],Enemy1[i]));
+		}
+		p.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
+		
          //ZoomSelector
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
