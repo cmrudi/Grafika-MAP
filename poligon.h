@@ -211,7 +211,7 @@ class Poligon : public Shape
         }
 
         void movePolygon(int x, int y){
-            for(int i = 0; i < arr_Line.size(); i++){
+            for(int i = 0; i<  arr_Line.size(); i++){
                 arr_Line[i].moveLine(x, y);
             }
         }

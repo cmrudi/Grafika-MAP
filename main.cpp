@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <termios.h>
 #include <thread>
+#define DELTA_GERAK 2
 
 
 static struct termios oldt;
@@ -20,7 +21,7 @@ Parser parse;
 Parser parse2;
 Poligon p;
 pthread_t t_control;
-Player player(100,100,0,255,0,&panelMain,&a);	
+Player player(100,100,0,255,0,&panelMain,&a);
 
 void *controller(void *args){
     while(1){
@@ -29,23 +30,23 @@ void *controller(void *args){
 
         if(c == 'j'){
             if(panelSmall.getXMin() > 10){
-                panelSmall.setXMin(panelSmall.getXMin() - 2);
-                player.update_player(-10, 0, 3);
+                panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
+                player.update_player(-DELTA_GERAK, 0, 3);
             }
         }else if(c == 'k'){
             if(panelSmall.getYMin() > 10){
-                panelSmall.setYMin(panelSmall.getYMin() + 2);
-                player.update_player(0, 10, 2);
+                panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
+                player.update_player(0, DELTA_GERAK, 2);
             }
         }else if (c == 'l'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
-                panelSmall.setXMin(panelSmall.getXMin() + 2);
-                player.update_player(10, 0, 1);
+                panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
+                player.update_player(DELTA_GERAK, 0, 1);
             }
         }else if(c == 'i'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-                panelSmall.setYMin(panelSmall.getYMin() - 2);
-                player.update_player(0, -10, 0);
+                panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
+                player.update_player(0, -DELTA_GERAK, 0);
             }
         }else if(c == 'b'){
             panelSmall.setXSize(panelSmall.getXSize()+10);
@@ -81,7 +82,7 @@ int main(int argc, char** argv){
     PTree2 = parse2.getTrees();
     /////////////////////////////////////
 
-    
+
     // Insert Coordinat To Array
     for(int i = 1; i < PTree.size(); i++){
         p.add(Line(PTree[i-1],PTree[i]));
@@ -95,7 +96,6 @@ int main(int argc, char** argv){
 
     pthread_create(&t_control, NULL, controller, NULL);
     p.scalePolygon(0.75,0.75);
-
 	a.EmptyScreen();
     while(1) {
 		disable_waiting_for_enter();
@@ -104,11 +104,12 @@ int main(int argc, char** argv){
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
         p.draw(&panelMain);
+        //p.draw_fill_color(0,0, &panelMain);
         player.player_shape.draw(&panelMain);
-        //a.drawFrame(panelMain);
+        a.drawFrame(panelMain);
         a.drawFrame(panelBig);
         a.drawFrame(panelSmall);
-        
+
         //player.draw_player();
         a.Draw();
 
@@ -116,7 +117,7 @@ int main(int argc, char** argv){
         panelSmall.EmptyFrame();
         panelBig.EmptyFrame();
     }
-    
+
 
     pthread_join(t_control, NULL);
 

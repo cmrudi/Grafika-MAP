@@ -340,7 +340,7 @@ public:
 	std::vector<std::vector<Color> > M;
 
 private:
-    
+
     int sizex, sizey;
     int xmin, ymin;
 };
@@ -384,8 +384,8 @@ public:
 	     // Figure out the size of the screen in bytes
 	     screensize = vinfo.xres * vinfo.yres * vinfo.bits_per_pixel / 8;
 
-	     //setXSize(vinfo.xres_virtual-10);
-	     //setYSize(vinfo.yres_virtual-10);
+	    //  setXSize(vinfo.xres_virtual-10);
+	    //  setYSize(vinfo.yres_virtual-10);
 	     setXSize(1300);
 	     setYSize(700);
 	     EmptyFrame();

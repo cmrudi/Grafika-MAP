@@ -11,9 +11,9 @@ public:
         this->fb = fbuff;
         Color c(r,g,b);
 
-        Point P1(x, y-20);
-        Point P2(x+7, y+10);
-        Point P3(x-7, y+10);
+        Point P1(x, y-10);
+        Point P2(x+3, y+5);
+        Point P3(x-3, y+5);
 
         player_points.push_back(P1);
         player_points.push_back(P2);
