@@ -1,4 +1,4 @@
-#include <ncurses.h>
+// #include <ncurses.h>
 #include <iostream>
 #include <stdio.h>
 #include "poligon.h"
@@ -7,6 +7,7 @@
 #include <pthread.h>
 #include <termios.h>
 #include <thread>
+#include <stdlib.h>
 #define DELTA_GERAK 2
 
 
@@ -15,7 +16,7 @@ std::vector<Point> PTree;
 std::vector<Point> PTree2;
 std::vector<Point> Enemy1;
 FramePanel panelMain(700, 700, 0, 0);
-FramePanel panelSmall(100, 100, 50, 50);
+FramePanel panelSmall(100, 100, 0, 300);
 FramePanel panelBig(500, 500, 750, 0);
 Framebuffer a;
 Parser parse;
@@ -23,8 +24,8 @@ Parser parse2;
 Parser enemy1;
 Poligon p;
 pthread_t t_control;
-Player player(100,100,0,255,0,&panelMain,&a);
 int x1 = 200;
+Player player(30,350,0,255,0,&panelMain,&a);
 
 void *controller(void *args){
     while(1){
@@ -33,25 +34,29 @@ void *controller(void *args){
 
         if(c == 'a'){
             if(panelSmall.getXMin() > 10){
-                panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
+				if (player.is_move_valid(-DELTA_GERAK, 0))
+					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                 player.update_player(-DELTA_GERAK, 0, 3);
             }
             printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 's'){
             if(panelSmall.getYMin() > 10){
-                panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
+				if (player.is_move_valid(0, DELTA_GERAK))
+					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                 player.update_player(0, DELTA_GERAK, 2);
             }
             printf("y: %d\n", panelSmall.getYMin());
         }else if (c == 'd'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
-                panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
+				if (player.is_move_valid(DELTA_GERAK, 0))
+					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                 player.update_player(DELTA_GERAK, 0, 1);
             }
             printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 'w'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-                panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
+				if (player.is_move_valid(0, -DELTA_GERAK))
+					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                 player.update_player(0, -DELTA_GERAK, 0);
             }
             printf("y: %d\n", panelSmall.getYMin());
@@ -100,10 +105,23 @@ int main(int argc, char** argv){
     }
     p.add(Line(PTree2[0],PTree2[PTree2.size()-1]));
     //////////////////////////////////////
+    // a.EmptyScreen();
+    p.scalePolygon(0.75,0.75);
+    p.setfill_color(Color::BLUE);
+
+    p.draw(&panelMain);
+    p.draw_fill_color(28,28, &panelMain);
+    p.draw_fill_color(617,600, &panelMain);
+
+    p.draw(&panelMain);
+    a.drawFrame(panelMain);
+    // a.set(Color::GREEN, 617,600);
+    a.Draw();
+    // usleep(100000000);
+
 
     pthread_create(&t_control, NULL, controller, NULL);
-    p.scalePolygon(0.75,0.75);
-	a.EmptyScreen();
+
     while(1) {
 		disable_waiting_for_enter();
 		
@@ -135,7 +153,7 @@ int main(int argc, char** argv){
         //player.draw_player();
         a.Draw();
 
-        panelMain.EmptyFrame();
+        // panelMain.EmptyFrame();
         panelSmall.EmptyFrame();
         panelBig.EmptyFrame();
     }
