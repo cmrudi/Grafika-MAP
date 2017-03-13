@@ -15,14 +15,14 @@ static struct termios oldt;
 std::vector<Point> PTree;
 std::vector<Point> PTree2;
 FramePanel panelMain(700, 700, 0, 0);
-FramePanel panelSmall(100, 100, 50, 50);
+FramePanel panelSmall(100, 100, 0, 300);
 FramePanel panelBig(500, 500, 750, 0);
 Framebuffer a;
 Parser parse;
 Parser parse2;
 Poligon p;
 pthread_t t_control;
-Player player(100,100,0,255,0,&panelMain,&a);
+Player player(30,350,0,255,0,&panelMain,&a);
 
 void *controller(void *args){
     while(1){
@@ -31,22 +31,26 @@ void *controller(void *args){
 
         if(c == 'j'){
             if(panelSmall.getXMin() > 10){
-                panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
+				if (player.is_move_valid(-DELTA_GERAK, 0))
+					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                 player.update_player(-DELTA_GERAK, 0, 3);
             }
         }else if(c == 'k'){
             if(panelSmall.getYMin() > 10){
-                panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
+				if (player.is_move_valid(0, DELTA_GERAK))
+					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                 player.update_player(0, DELTA_GERAK, 2);
             }
         }else if (c == 'l'){
             if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
-                panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
+				if (player.is_move_valid(DELTA_GERAK, 0))
+					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                 player.update_player(DELTA_GERAK, 0, 1);
             }
         }else if(c == 'i'){
             if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-                panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
+				if (player.is_move_valid(0, -DELTA_GERAK))
+					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                 player.update_player(0, -DELTA_GERAK, 0);
             }
         }else if(c == 'b'){
