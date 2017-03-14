@@ -133,16 +133,39 @@ bool drawWhiteLine(int x1, int y1, int x2, int y2, int prior) {
 }
 
 void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColor,int greenColor,int blueColor, int prior){
-    if((x>=0 && x<WIDTH) && (y>=0 && y<HEIGHT)){
-        if(!((redPixelMatrix[x][y][prior] ==redBatas && greenPixelMatrix[x][y][prior] ==greenBatas && bluePixelMatrix[x][y][prior] ==blueBatas) ||
-            (redPixelMatrix[x][y][prior]==redColor && greenPixelMatrix[x][y][prior]==greenColor && bluePixelMatrix[x][y][prior]==blueColor))){
-            redPixelMatrix[x][y][prior] = redColor;
-            greenPixelMatrix[x][y][prior] = greenColor;
-            bluePixelMatrix[x][y][prior] = blueColor;
-            floodFill(x,y+1,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor,prior);
-            floodFill(x+1,y,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor,prior);
-            floodFill(x,y-1,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor,prior);
-            floodFill(x-1,y,redBatas,greenBatas,blueBatas,redColor,greenColor,blueColor,prior);
+    stack<Point> queue;
+    Point point_todo(x, y), current_point;
+    queue.push(point_todo);
+
+    while (!queue.empty()) {
+        current_point = queue.top();
+        // current_point.printPoint();
+        // printf("\n");
+        queue.pop();
+        if (!((redPixelMatrix[current_point.getX()][current_point.getY()][prior] ==redBatas && greenPixelMatrix[current_point.getX()][current_point.getY()][prior] ==greenBatas && bluePixelMatrix[current_point.getX()][current_point.getY()][prior] ==blueBatas) ||
+             (redPixelMatrix[current_point.getX()][current_point.getY()][prior]==redColor && greenPixelMatrix[current_point.getX()][current_point.getY()][prior]==greenColor && bluePixelMatrix[current_point.getX()][current_point.getY()][prior]==blueColor))) {
+            // printf("here\n");
+            redPixelMatrix[current_point.getX()][current_point.getY()][prior] = redColor;
+            greenPixelMatrix[current_point.getX()][current_point.getY()][prior] = greenColor;
+            bluePixelMatrix[current_point.getX()][current_point.getY()][prior] = blueColor;
+            
+            point_todo = current_point;
+            point_todo.Move(1,0);
+            queue.push(point_todo);
+
+            point_todo = current_point;
+            point_todo.Move(0,1);
+            queue.push(point_todo);
+
+            point_todo = current_point;
+            point_todo.Move(-1,0);
+            queue.push(point_todo);
+
+            point_todo = current_point;
+            point_todo.Move(0,-1);
+            queue.push(point_todo);
+        } else {
+            // printf("black\n");
         }
     }
 }
@@ -153,6 +176,7 @@ void drawWin() {
     drawWhiteLine(1,1,1,240,0);
     drawWhiteLine(520,1,520,240,0);
     drawWhiteLine(1,240,520,240,0);
+    floodFill(5,5,255,255,255,255,0,0,0);
 
     //priority 1
 
@@ -167,14 +191,14 @@ void drawWin() {
     drawWhiteLine(140,200,120,160,1);
     drawWhiteLine(120,160,80,200,1);
     drawWhiteLine(80,200,40,40,1);
-    //floodFill(60,60,255,255,255,0,255,0,1);
+    floodFill(60,60,255,255,255,0,255,0,1);
 
     //I
     drawWhiteLine(240,40,280,40,1);
     drawWhiteLine(280,40,280,200,1);
     drawWhiteLine(280,200,240,200,1);
     drawWhiteLine(240,200,240,40,1);
-    //floodFill(260,120,255,255,255,0,255,0,1);
+    floodFill(260,120,255,255,255,0,255,0,1);
 
     //N
     drawWhiteLine(320,40,360,40,1);
@@ -187,7 +211,7 @@ void drawWin() {
     drawWhiteLine(360,120,360,200,1);
     drawWhiteLine(360,200,320,200,1);
     drawWhiteLine(320,200,320,40,1);
-    //floodFill(340,60,255,255,255,0,255,0,1);
+    floodFill(340,60,255,255,255,0,255,0,1);
 }
 
 void drawPanelWin() {
@@ -208,25 +232,19 @@ void *controller(void *args){
         c = getch();
 
         if(c == 'a'){
-            if(panelSmall.getXMin() > 10){
-				if (player.is_move_valid(-DELTA_GERAK, 0))
+            	if (player.is_move_valid(-DELTA_GERAK, 0))
 					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                 player.update_player(-DELTA_GERAK, 0, 3);
-            }
             // printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 's'){
-            if(panelSmall.getYMin() < panelMain.getXSize() - panelSmall.getYMin()){
-				if (player.is_move_valid(0, DELTA_GERAK))
+            	if (player.is_move_valid(0, DELTA_GERAK))
 					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                 player.update_player(0, DELTA_GERAK, 2);
-            }
             // printf("y: %d\n", panelSmall.getYMin());
         }else if (c == 'd'){
-            if(panelSmall.getXMin() < panelMain.getXSize() - panelSmall.getXMin()-10){
-				if (player.is_move_valid(DELTA_GERAK, 0))
+            	if (player.is_move_valid(DELTA_GERAK, 0))
 					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                 player.update_player(DELTA_GERAK, 0, 1);
-            }
             // printf("x: %d\n", panelSmall.getXMin());
         }else if(c == 'w'){
             	if (player.is_move_valid(0, -DELTA_GERAK))
@@ -246,14 +264,14 @@ void *controller(void *args){
             player.player_cheat();
         }
         else if (c == 'p') {
-			/*
+			
 			if (isWin == 1) {
 				isWin = 0;
 			}
 			else {
 				isWin = 1;
 			}
-			* */
+			
         }
     }
 }
