@@ -19,20 +19,21 @@ std::vector<Point> PTree2;
 std::vector<Point> Enemy1;
 FramePanel panelMain(700, 700, 0, 0);
 FramePanel panelSmall(100, 100, 0, 300);
-FramePanel panelBig(500, 500, 750, 0);
+FramePanel panelBig(500, 500, 750, 95);
 FramePanel panelWin(521,241,340,200);
+FramePanel panelTemp(700, 700, 0, 0);
 Framebuffer a;
 Parser parse;
 Parser parse2;
 Parser enemy1;
 Poligon p, enemyPoligon;
 pthread_t t_control;
-int x1 = 200;
 Player player(30,350,0,255,0,&panelMain,&a);
 int redPixelMatrix[WIDTH][HEIGHT][2];
 int greenPixelMatrix[WIDTH][HEIGHT][2];
 int bluePixelMatrix[WIDTH][HEIGHT][2];
 int isWin = 0;
+int isShowMap = 1;
 
 void initializePriorMatrix () {
     for (int i = 0; i < WIDTH; i++) {
@@ -251,10 +252,10 @@ void *controller(void *args){
     					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                     player.update_player(0, -DELTA_GERAK, 0);
                 // printf("y: %d\n", panelSmall.getYMin());
-            }else if(c == 'b'){
+            }else if(c == 'e'){
                 panelSmall.setXSize(panelSmall.getXSize()+10);
                 panelSmall.setYSize(panelSmall.getYSize()+10);
-            }else if(c == 'n'){
+            }else if(c == 'q'){
                 panelSmall.setXSize(panelSmall.getXSize()-10);
                 panelSmall.setYSize(panelSmall.getYSize()-10);
             }
@@ -263,15 +264,13 @@ void *controller(void *args){
                 panelSmall.setXMin(550);
                 player.player_cheat();
             }
-            else if (c == 'p') {
-    			
-    			if (isWin == 1) {
-    				isWin = 0;
-    			}
-    			else {
-    				isWin = 1;
-    			}
-    			
+            else if (c == 't') {
+                if (isShowMap == 0) {
+                    isShowMap = 1;
+                }
+                else if (isShowMap == 1) {
+                    isShowMap = 0;
+                }
             }
         }
     }
@@ -301,7 +300,6 @@ int main(int argc, char** argv){
     PTree2 = parse2.getTrees();
     /////////////////////////////////////
 
-
     // Insert Coordinat To Array
     for(int i = 1; i < PTree.size(); i++){
         p.add(Line(PTree[i-1],PTree[i]));
@@ -321,43 +319,44 @@ int main(int argc, char** argv){
     p.draw_fill_color(617,600, &panelMain);
 
     p.draw(&panelMain);
-    a.drawFrame(panelMain);
     a.Draw();
     // usleep(100000000);
     drawWin();
     drawPanelWin();
 
 	// draw enemy
-    enemy1.parseEnemy("object/enemy1.txt", x1, 35);
+    enemy1.parseEnemy("object/enemy.txt", 36, 620);
+    int x1 = 620; int mutar1 = 0;
     Enemy1 = enemy1.getTrees();
     for(int i = 1; i < Enemy1.size(); i++){
         enemyPoligon.add(Line(Enemy1[i-1],Enemy1[i]));
     }
     enemyPoligon.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
 	/////////////////////////////////
+
     pthread_create(&t_control, NULL, controller, NULL);
 
 	int x = 0;
     while(1) {
 		//disable_waiting_for_enter();
-
-		// Read Enemy File
-	
-		if (x1 > 150) {
-			x1--;
-		}
-		else if (x1 < 200) {
-			x1++;
-		}
          //ZoomSelector
         enemyPoligon.drawInside(&panelSmall, &panelBig);
-        if (x) {
-			enemyPoligon.erase(&panelMain);
-			x = 0;
-			enemyPoligon.movePolygon(-1, 0);
-		} else {
-			x = 1;
-		}
+		enemyPoligon.erase(&panelMain);
+        
+        if (mutar1 == 1) {
+            enemyPoligon.movePolygon(0, 2); 
+            x1 += 2;
+        }
+		else {
+            enemyPoligon.movePolygon(0, -2); 
+            x1 -= 2;
+        }
+        if (x1 == 420) {
+            mutar1 = 1;
+        }
+        if (x1 == 620) {
+            mutar1 = 0;
+        }
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
@@ -365,9 +364,16 @@ int main(int argc, char** argv){
         p.draw(&panelMain);
         // p.draw_fill_color(0,0, &panelMain);
         player.player_shape.draw(&panelMain);
-        a.drawFrame(panelMain);
+        if (isShowMap == 1) {
+           a.drawFrame(panelMain);
+        }
         a.drawFrame(panelBig);
-        a.drawFrame(panelSmall);
+        if (isShowMap == 1) {
+            a.drawFrame(panelSmall);
+        }
+        if (isShowMap == 0) {
+            a.drawFrame(panelTemp);
+        }
         if ((player.player_center_point.getX() >= 620) && (player.player_center_point.getX() <= 650) && (player.player_center_point.getY() >= 93) && (player.player_center_point.getY() <= 115)) {
             isWin = 1;
         }

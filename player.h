@@ -112,7 +112,7 @@ public:
     void draw_player() {
         player_shape.draw(panel);
         //player_shape.draw_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
-        fb->drawFrame(*panel);
+        //fb->drawFrame(*panel);
         fb->Draw();
     }
 
