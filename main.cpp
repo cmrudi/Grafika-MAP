@@ -230,48 +230,49 @@ void *controller(void *args){
     char c;
     while(1){
         c = getch();
-
-        if(c == 'a'){
-            	if (player.is_move_valid(-DELTA_GERAK, 0))
-					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
-                player.update_player(-DELTA_GERAK, 0, 3);
-            // printf("x: %d\n", panelSmall.getXMin());
-        }else if(c == 's'){
-            	if (player.is_move_valid(0, DELTA_GERAK))
-					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
-                player.update_player(0, DELTA_GERAK, 2);
-            // printf("y: %d\n", panelSmall.getYMin());
-        }else if (c == 'd'){
-            	if (player.is_move_valid(DELTA_GERAK, 0))
-					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
-                player.update_player(DELTA_GERAK, 0, 1);
-            // printf("x: %d\n", panelSmall.getXMin());
-        }else if(c == 'w'){
-            	if (player.is_move_valid(0, -DELTA_GERAK))
-					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
-                player.update_player(0, -DELTA_GERAK, 0);
-            // printf("y: %d\n", panelSmall.getYMin());
-        }else if(c == 'b'){
-            panelSmall.setXSize(panelSmall.getXSize()+10);
-            panelSmall.setYSize(panelSmall.getYSize()+10);
-        }else if(c == 'n'){
-            panelSmall.setXSize(panelSmall.getXSize()-10);
-            panelSmall.setYSize(panelSmall.getYSize()-10);
-        }
-        else if (c == 'c') {
-            panelSmall.setYMin(150);
-            panelSmall.setXMin(550);
-            player.player_cheat();
-        }
-        else if (c == 'p') {
-			
-			if (isWin == 1) {
-				isWin = 0;
-			}
-			else {
-				isWin = 1;
-			}
-			
+        if (isWin == 0) {
+            if(c == 'a'){
+                	if (player.is_move_valid(-DELTA_GERAK, 0))
+    					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
+                    player.update_player(-DELTA_GERAK, 0, 3);
+                // printf("x: %d\n", panelSmall.getXMin());
+            }else if(c == 's'){
+                	if (player.is_move_valid(0, DELTA_GERAK))
+    					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
+                    player.update_player(0, DELTA_GERAK, 2);
+                // printf("y: %d\n", panelSmall.getYMin());
+            }else if (c == 'd'){
+                	if (player.is_move_valid(DELTA_GERAK, 0))
+    					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
+                    player.update_player(DELTA_GERAK, 0, 1);
+                // printf("x: %d\n", panelSmall.getXMin());
+            }else if(c == 'w'){
+                	if (player.is_move_valid(0, -DELTA_GERAK))
+    					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
+                    player.update_player(0, -DELTA_GERAK, 0);
+                // printf("y: %d\n", panelSmall.getYMin());
+            }else if(c == 'b'){
+                panelSmall.setXSize(panelSmall.getXSize()+10);
+                panelSmall.setYSize(panelSmall.getYSize()+10);
+            }else if(c == 'n'){
+                panelSmall.setXSize(panelSmall.getXSize()-10);
+                panelSmall.setYSize(panelSmall.getYSize()-10);
+            }
+            else if (c == 'c') {
+                panelSmall.setYMin(150);
+                panelSmall.setXMin(550);
+                player.player_cheat();
+            }
+            else if (c == 'p') {
+    			
+    			if (isWin == 1) {
+    				isWin = 0;
+    			}
+    			else {
+    				isWin = 1;
+    			}
+    			
+            }
         }
     }
 }
@@ -367,14 +368,13 @@ int main(int argc, char** argv){
         a.drawFrame(panelMain);
         a.drawFrame(panelBig);
         a.drawFrame(panelSmall);
-        if (player.player_center_point.getX() == 645 && player.player_center_point.getY() == 110) {
+        if ((player.player_center_point.getX() >= 620) && (player.player_center_point.getX() <= 650) && (player.player_center_point.getY() >= 93) && (player.player_center_point.getY() <= 115)) {
             isWin = 1;
         }
 
         if (isWin == 1) {
             a.drawFrame(panelWin);
         }
-
         a.Draw();
 
         // panelMain.EmptyFrame();
