@@ -20,7 +20,7 @@ std::vector<Point> Enemy1;
 FramePanel panelMain(700, 700, 0, 0);
 FramePanel panelSmall(100, 100, 0, 300);
 FramePanel panelBig(500, 500, 750, 0);
-FramePanel panelWin(521,241,340,400);
+FramePanel panelWin(521,241,340,200);
 Framebuffer a;
 Parser parse;
 Parser parse2;
@@ -32,6 +32,7 @@ Player player(30,350,0,255,0,&panelMain,&a);
 int redPixelMatrix[WIDTH][HEIGHT][2];
 int greenPixelMatrix[WIDTH][HEIGHT][2];
 int bluePixelMatrix[WIDTH][HEIGHT][2];
+int isWin = 0;
 
 void initializePriorMatrix () {
     for (int i = 0; i < WIDTH; i++) {
@@ -241,6 +242,9 @@ void *controller(void *args){
             panelSmall.setXSize(panelSmall.getXSize()-10);
             panelSmall.setYSize(panelSmall.getYSize()-10);
         }
+        else if (c == 'p') {
+            isWin = 1;
+        }
     }
 }
 
@@ -325,8 +329,13 @@ int main(int argc, char** argv){
         a.drawFrame(panelMain);
         a.drawFrame(panelBig);
         a.drawFrame(panelSmall);
-        if (player.player_center_point.getX() == 645 && player.player_center_point.getY() == 110)
+        if (player.player_center_point.getX() == 645 && player.player_center_point.getY() == 110) {
+            isWin = 1;
+        }
+
+        if (isWin == 1) {
             a.drawFrame(panelWin);
+        }
 
         //player.draw_player();
         a.Draw();
