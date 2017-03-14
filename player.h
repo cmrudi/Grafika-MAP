@@ -1,5 +1,8 @@
 #include "framebuffer.h"
 #include "poligon.h"
+#include "framepanel.h"
+#include "color.h"
+#include "point.h"
 #include <termios.h>
 #define DELTA_PLAYER_MOVE 3
 class Player {

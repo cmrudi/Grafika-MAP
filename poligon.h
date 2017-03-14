@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "line.h"
+#include "framepanel.h"
 #include <stack>
 using namespace std;
 

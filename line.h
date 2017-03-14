@@ -3,6 +3,8 @@
 
 #include "framebuffer.h"
 #include "shape.h"
+#include "color.h"
+#include "framepanel.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
