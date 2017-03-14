@@ -65,15 +65,10 @@ public:
 
 	void rotateP(double degrees, const Point& center = Point()){
 		double rad_angle = degrees * 3.14 / 180;
-		// printf("%f\n",rad_angle);
-		//translate to origin
 		double dx = this->x - center.x;
 		double dy = this->y - center.y;
-		// printf("%f %f\n", dx,dy);
-		//rotate point
 		double new_dx = (dx) * cos(rad_angle) - (dy) * sin(rad_angle);
 		double new_dy = (dx) * sin(rad_angle) + (dy) * cos(rad_angle);
-		// printf("%f %f\n", dx,dy);
 
 		this->x = (int)round(new_dx) + center.x;
 		this->y = (int)round(new_dy) + center.y;
@@ -83,8 +78,6 @@ public:
 		(*this).x = center.x + floor((float)((*this).x-center.x)*sx);
 		(*this).y = center.y + floor((float)((*this).y-center.y)*sy);
 	}
-
-	// void ScaleClip(float sx, float sy, int x1, int x2)
 
 	void printPoint(){
 		std::cout << x << " " << y << " ";

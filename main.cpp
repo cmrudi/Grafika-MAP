@@ -1,4 +1,3 @@
-// #include <ncurses.h>
 #include <iostream>
 #include <stdio.h>
 #include "poligon.h"
@@ -146,12 +145,9 @@ void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColo
 
     while (!queue.empty()) {
         current_point = queue.top();
-        // current_point.printPoint();
-        // printf("\n");
         queue.pop();
         if (!((redPixelMatrix[current_point.getX()][current_point.getY()][prior] ==redBatas && greenPixelMatrix[current_point.getX()][current_point.getY()][prior] ==greenBatas && bluePixelMatrix[current_point.getX()][current_point.getY()][prior] ==blueBatas) ||
              (redPixelMatrix[current_point.getX()][current_point.getY()][prior]==redColor && greenPixelMatrix[current_point.getX()][current_point.getY()][prior]==greenColor && bluePixelMatrix[current_point.getX()][current_point.getY()][prior]==blueColor))) {
-            // printf("here\n");
             redPixelMatrix[current_point.getX()][current_point.getY()][prior] = redColor;
             greenPixelMatrix[current_point.getX()][current_point.getY()][prior] = greenColor;
             bluePixelMatrix[current_point.getX()][current_point.getY()][prior] = blueColor;
@@ -171,8 +167,6 @@ void floodFill(int x,int y,int redBatas,int greenBatas,int blueBatas,int redColo
             point_todo = current_point;
             point_todo.Move(0,-1);
             queue.push(point_todo);
-        } else {
-            // printf("black\n");
         }
     }
 }
@@ -244,24 +238,20 @@ void *controller(void *args){
     					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                     player.update_player(-DELTA_GERAK, 0, 3);
                 }
-                // printf("x: %d\n", panelSmall.getXMin());
             }else if(c == 's'){
                 	if (player.is_move_valid(0, DELTA_GERAK))
     					panelSmall.setYMin(panelSmall.getYMin() + DELTA_GERAK);
                     player.update_player(0, DELTA_GERAK, 2);
-                // printf("y: %d\n", panelSmall.getYMin());
             }else if (c == 'd'){
                 	if (player.is_move_valid(DELTA_GERAK, 0))
     					panelSmall.setXMin(panelSmall.getXMin() + DELTA_GERAK);
                     player.update_player(DELTA_GERAK, 0, 1);
-                // printf("x: %d\n", panelSmall.getXMin());
             }else if(c == 'w'){
                 if (panelSmall.getYMin() != 0) {
                 	if (player.is_move_valid(0, -DELTA_GERAK))
     					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                     player.update_player(0, -DELTA_GERAK, 0);
                 }
-                // printf("y: %d\n", panelSmall.getYMin());
             }else if(c == 'e'){
                 if (zoomSize < 10) {
                     panelSmall.setXSize(panelSmall.getXSize()+10);
@@ -276,8 +266,8 @@ void *controller(void *args){
                 }
             }
             else if (c == 'c') {
-                panelSmall.setYMin(160);
-                panelSmall.setXMin(560);
+                panelSmall.setYMin(166);
+                panelSmall.setXMin(566);
                 player.player_cheat();
             }
             else if (c == 't') {
@@ -314,7 +304,6 @@ int main(int argc, char** argv){
     parse2.parseTree("object/maze_point.txt");
     PTree = parse.getTrees();
     PTree2 = parse2.getTrees();
-    /////////////////////////////////////
 
     // Insert Coordinat To Array
     for(int i = 1; i < PTree.size(); i++){
@@ -325,8 +314,7 @@ int main(int argc, char** argv){
         p.add(Line(PTree2[i-1],PTree2[i]));
     }
     p.add(Line(PTree2[0],PTree2[PTree2.size()-1]));
-    //////////////////////////////////////
-    // a.EmptyScreen();
+
     p.scalePolygon(0.75,0.75);
     p.setfill_color(Color::BLUE);
 
@@ -336,7 +324,6 @@ int main(int argc, char** argv){
 
     p.draw(&panelMain);
     a.Draw();
-    // usleep(100000000);
     drawWin();
     drawPanelWin();
 
@@ -364,7 +351,6 @@ int main(int argc, char** argv){
         enemyPoligon3.add(Line(Enemy3[i-1],Enemy3[i]));
     }
     enemyPoligon3.add(Line(Enemy3[0],Enemy3[Enemy3.size()-1]));
-	/////////////////////////////////
 
     pthread_create(&t_control, NULL, controller, NULL);
 
@@ -373,7 +359,6 @@ int main(int argc, char** argv){
     panelSmall.setYSize(panelSmall.getYSize()+10);
     zoomSize += 1;
     while(1) {
-		//disable_waiting_for_enter();
          //ZoomSelector
         enemyPoligon.drawInside(&panelSmall, &panelBig);
 		enemyPoligon.erase(&panelMain);
@@ -438,7 +423,6 @@ int main(int argc, char** argv){
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
         p.draw(&panelMain);
-        // p.draw_fill_color(0,0, &panelMain);
         player.player_shape.draw(&panelMain);
         if (isShowMap == 1) {
            a.drawFrame(panelMain);
@@ -459,7 +443,6 @@ int main(int argc, char** argv){
         }
         a.Draw();
 
-        // panelMain.EmptyFrame();
         panelSmall.EmptyFrame();
         panelBig.EmptyFrame();
     }

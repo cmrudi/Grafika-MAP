@@ -182,7 +182,6 @@ class Line : public Shape
                                 (*a).set(c,xn+k,yn+j);
                             }
                     }
-                    //scanf("%d", &inp);
                 }
             } else {
                 for (int i=0; i <dy; i++){

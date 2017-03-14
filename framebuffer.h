@@ -144,9 +144,6 @@ public:
 		}
     }
 
-
-
-
 private:
 
     int getLocation(int x, int y) {
@@ -162,4 +159,3 @@ private:
 };
 
 #endif
-/*reference to https://github.com/azaky/grafika/*/

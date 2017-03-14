@@ -38,11 +38,8 @@ class Poligon : public Shape
 
             while (!queue.empty()) {
                 current_point = queue.top();
-                // current_point.printPoint();
-                // printf("\n");
                 queue.pop();
                 if ((panel->get(current_point) != Color::BLACK)) {
-                    // printf("here\n");
                     panel->set(Color::BLACK, current_point);
 
                     point_todo = current_point;
@@ -60,8 +57,6 @@ class Poligon : public Shape
                     point_todo = current_point;
                     point_todo.Move(0,-1);
                     queue.push(point_todo);
-                } else {
-                    // printf("black\n");
                 }
             }
         }
@@ -73,11 +68,8 @@ class Poligon : public Shape
 
             while (!queue.empty()) {
                 current_point = queue.top();
-                // current_point.printPoint();
-                // printf("\n");
                 queue.pop();
                 if ((panel->get(current_point) == Color::BLACK)) {
-                    // printf("here\n");
                     panel->set(fill_color, current_point);
 
                     point_todo = current_point;
@@ -95,8 +87,6 @@ class Poligon : public Shape
                     point_todo = current_point;
                     point_todo.Move(0,-1);
                     queue.push(point_todo);
-                } else {
-                    // printf("black\n");
                 }
             }
         }
@@ -248,10 +238,7 @@ class Poligon : public Shape
 
         void rotate(int degree, Point &center_point) {
             for (unsigned int i = 0; i < arr_Line.size(); i++) {
-                // printf("before "); arr_Line[i].printLine();
                 arr_Line[i].rotateLine(degree, center_point);
-
-                // printf("after ");arr_Line[i].printLine();
             }
         }
 
