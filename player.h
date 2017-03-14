@@ -61,6 +61,9 @@ public:
                 move_x = -DELTA_PLAYER_MOVE;
                 move_y = 0;
             }
+            else if (c == 'c') {
+                player_cheat();
+            }
             printf("\033[%d;%dH", YP, XP);
             update_player(move_x, move_y, new_direction);
         }
@@ -116,6 +119,32 @@ public:
     void erase_player() {
         player_shape.erase(panel);
         //player_shape.erase_fill_color(player_center_point.getX(), player_center_point.getY(), panel);
+    }
+
+    void player_cheat() {
+        erase_player();
+        int x = 600;
+        int y = 200;
+        player_center_point.setX(x);
+        player_center_point.setY(y);
+        
+        Point P1(x, y-10);
+        Point P2(x+3, y+5);
+        Point P3(x-3, y+5);
+
+        player_points.clear();
+        player_points.push_back(P1);
+        player_points.push_back(P2);
+        player_points.push_back(P3);
+        player_shape.clearPolygon();
+        Line l;
+        for (unsigned int i = 0; i < player_points.size(); i++) {
+            l.setP1(player_points[i]);
+            l.setP2(player_points[(i+1)%player_points.size()]);
+            player_shape.add(l);
+        }
+        draw_player();
+
     }
 
     void rotate_player(int new_dir) {

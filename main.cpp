@@ -152,7 +152,7 @@ void drawWin() {
     drawWhiteLine(1,1,1,240,0);
     drawWhiteLine(520,1,520,240,0);
     drawWhiteLine(1,240,520,240,0);
-    floodFill(2,2,255,255,255,255,0,0,0);
+    //floodFill(5,5,255,255,255,255,0,0,0);
 
 
     //priority 1
@@ -168,14 +168,14 @@ void drawWin() {
     drawWhiteLine(140,200,120,160,1);
     drawWhiteLine(120,160,80,200,1);
     drawWhiteLine(80,200,40,40,1);
-    floodFill(60,60,255,255,255,0,255,0,1);
+    //floodFill(60,60,255,255,255,0,255,0,1);
 
     //I
     drawWhiteLine(240,40,280,40,1);
     drawWhiteLine(280,40,280,200,1);
     drawWhiteLine(280,200,240,200,1);
     drawWhiteLine(240,200,240,40,1);
-    floodFill(260,120,255,255,255,0,255,0,1);
+    //floodFill(260,120,255,255,255,0,255,0,1);
 
     //N
     drawWhiteLine(320,40,360,40,1);
@@ -188,7 +188,7 @@ void drawWin() {
     drawWhiteLine(360,120,360,200,1);
     drawWhiteLine(360,200,320,200,1);
     drawWhiteLine(320,200,320,40,1);
-    floodFill(340,60,255,255,255,0,255,0,1);
+    //floodFill(340,60,255,255,255,0,255,0,1);
 }
 
 void drawPanelWin() {
@@ -241,6 +241,11 @@ void *controller(void *args){
             panelSmall.setXSize(panelSmall.getXSize()-10);
             panelSmall.setYSize(panelSmall.getYSize()-10);
         }
+        else if (c == 'c') {
+            panelSmall.setYMin(150);
+            panelSmall.setXMin(550);
+            player.player_cheat();
+        }
     }
 }
 
@@ -289,7 +294,6 @@ int main(int argc, char** argv){
 
     p.draw(&panelMain);
     a.drawFrame(panelMain);
-    // a.set(Color::GREEN, 617,600);
     a.Draw();
     // usleep(100000000);
     drawWin();
@@ -329,6 +333,7 @@ int main(int argc, char** argv){
             a.drawFrame(panelWin);
 
         //player.draw_player();
+        //a.set(Color::GREEN, 600,200);
         a.Draw();
 
         // panelMain.EmptyFrame();

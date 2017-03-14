@@ -254,6 +254,10 @@ class Poligon : public Shape
             }
         }
 
+        void clearPolygon() {
+            arr_Line.clear();
+        }
+
     private:
         std::vector<Line> arr_Line;
         int thickness;
