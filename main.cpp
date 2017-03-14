@@ -16,17 +16,17 @@
 static struct termios oldt;
 std::vector<Point> PTree;
 std::vector<Point> PTree2;
-std::vector<Point> Enemy1;
+std::vector<Point> Enemy1, Enemy2, Enemy3;
 FramePanel panelMain(700, 700, 0, 0);
-FramePanel panelSmall(100, 100, 0, 300);
+FramePanel panelSmall(60, 60, 0, 320);
 FramePanel panelBig(500, 500, 750, 95);
 FramePanel panelWin(521,241,340,200);
 FramePanel panelTemp(700, 700, 0, 0);
 Framebuffer a;
 Parser parse;
 Parser parse2;
-Parser enemy1;
-Poligon p, enemyPoligon;
+Parser enemy1, enemy2, enemy3;
+Poligon p, enemyPoligon, enemyPoligon2, enemyPoligon3;
 pthread_t t_control;
 Player player(30,350,0,255,0,&panelMain,&a);
 int redPixelMatrix[WIDTH][HEIGHT][2];
@@ -34,6 +34,7 @@ int greenPixelMatrix[WIDTH][HEIGHT][2];
 int bluePixelMatrix[WIDTH][HEIGHT][2];
 int isWin = 0;
 int isShowMap = 1;
+int zoomSize = 0;
 
 void initializePriorMatrix () {
     for (int i = 0; i < WIDTH; i++) {
@@ -233,9 +234,11 @@ void *controller(void *args){
         c = getch();
         if (isWin == 0) {
             if(c == 'a'){
+                if (panelSmall.getXMin() != 0) {
                 	if (player.is_move_valid(-DELTA_GERAK, 0))
     					panelSmall.setXMin(panelSmall.getXMin() - DELTA_GERAK);
                     player.update_player(-DELTA_GERAK, 0, 3);
+                }
                 // printf("x: %d\n", panelSmall.getXMin());
             }else if(c == 's'){
                 	if (player.is_move_valid(0, DELTA_GERAK))
@@ -248,16 +251,24 @@ void *controller(void *args){
                     player.update_player(DELTA_GERAK, 0, 1);
                 // printf("x: %d\n", panelSmall.getXMin());
             }else if(c == 'w'){
+                if (panelSmall.getYMin() != 0) {
                 	if (player.is_move_valid(0, -DELTA_GERAK))
     					panelSmall.setYMin(panelSmall.getYMin() - DELTA_GERAK);
                     player.update_player(0, -DELTA_GERAK, 0);
+                }
                 // printf("y: %d\n", panelSmall.getYMin());
             }else if(c == 'e'){
-                panelSmall.setXSize(panelSmall.getXSize()+10);
-                panelSmall.setYSize(panelSmall.getYSize()+10);
+                if (zoomSize < 10) {
+                    panelSmall.setXSize(panelSmall.getXSize()+10);
+                    panelSmall.setYSize(panelSmall.getYSize()+10);
+                    zoomSize += 1;
+                }
             }else if(c == 'q'){
-                panelSmall.setXSize(panelSmall.getXSize()-10);
-                panelSmall.setYSize(panelSmall.getYSize()-10);
+                if (zoomSize > 0) {
+                    panelSmall.setXSize(panelSmall.getXSize()-10);
+                    panelSmall.setYSize(panelSmall.getYSize()-10);
+                    zoomSize -= 1;
+                }
             }
             else if (c == 'c') {
                 panelSmall.setYMin(150);
@@ -332,11 +343,22 @@ int main(int argc, char** argv){
         enemyPoligon.add(Line(Enemy1[i-1],Enemy1[i]));
     }
     enemyPoligon.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
+
+    enemy2.parseEnemy("object/enemy.txt", 500, 628);
+    int x2 = 500; int mutar2 = 0;
+    Enemy2 = enemy2.getTrees();
+    for(int i = 1; i < Enemy2.size(); i++){
+        enemyPoligon2.add(Line(Enemy2[i-1],Enemy2[i]));
+    }
+    enemyPoligon2.add(Line(Enemy2[0],Enemy2[Enemy2.size()-1]));
 	/////////////////////////////////
 
     pthread_create(&t_control, NULL, controller, NULL);
 
 	int x = 0;
+    panelSmall.setXSize(panelSmall.getXSize()+10);
+    panelSmall.setYSize(panelSmall.getYSize()+10);
+    zoomSize += 1;
     while(1) {
 		//disable_waiting_for_enter();
          //ZoomSelector
@@ -357,10 +379,30 @@ int main(int argc, char** argv){
         if (x1 == 620) {
             mutar1 = 0;
         }
+        
+        enemyPoligon.draw(&panelMain);
+        enemyPoligon2.drawInside(&panelSmall, &panelBig);
+        enemyPoligon2.erase(&panelMain);
+        
+        if (mutar2 == 1) {
+            enemyPoligon2.movePolygon(2, 0); 
+            x2 += 2;
+        }
+        else {
+            enemyPoligon2.movePolygon(-2, 0); 
+            x2 -= 2;
+        }
+        if (x2 == 130) {
+            mutar2 = 1;
+        }
+        if (x2 == 500) {
+            mutar2 = 0;
+        }
+        
+        enemyPoligon2.draw(&panelMain);
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
-		enemyPoligon.draw(&panelMain);
         p.draw(&panelMain);
         // p.draw_fill_color(0,0, &panelMain);
         player.player_shape.draw(&panelMain);
