@@ -8,7 +8,7 @@
 #include <termios.h>
 #include <thread>
 #include <stdlib.h>
-#define DELTA_GERAK 2
+#define DELTA_GERAK 5
 
 #define WIDTH 521
 #define HEIGHT 241
@@ -25,7 +25,7 @@ Framebuffer a;
 Parser parse;
 Parser parse2;
 Parser enemy1;
-Poligon p;
+Poligon p, enemyPoligon;
 pthread_t t_control;
 int x1 = 200;
 Player player(30,350,0,255,0,&panelMain,&a);
@@ -153,8 +153,6 @@ void drawWin() {
     drawWhiteLine(1,1,1,240,0);
     drawWhiteLine(520,1,520,240,0);
     drawWhiteLine(1,240,520,240,0);
-    //floodFill(5,5,255,255,255,255,0,0,0);
-
 
     //priority 1
 
@@ -248,7 +246,14 @@ void *controller(void *args){
             player.player_cheat();
         }
         else if (c == 'p') {
-            isWin = 1;
+			/*
+			if (isWin == 1) {
+				isWin = 0;
+			}
+			else {
+				isWin = 1;
+			}
+			* */
         }
     }
 }
@@ -303,32 +308,43 @@ int main(int argc, char** argv){
     drawWin();
     drawPanelWin();
 
+	// draw enemy
     enemy1.parseEnemy("object/enemy1.txt", x1, 35);
     Enemy1 = enemy1.getTrees();
     for(int i = 1; i < Enemy1.size(); i++){
-        p.add(Line(Enemy1[i-1],Enemy1[i]));
+        enemyPoligon.add(Line(Enemy1[i-1],Enemy1[i]));
     }
-    p.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
-
+    enemyPoligon.add(Line(Enemy1[0],Enemy1[Enemy1.size()-1]));
+	/////////////////////////////////
     pthread_create(&t_control, NULL, controller, NULL);
 
+	int x = 0;
     while(1) {
 		//disable_waiting_for_enter();
 
 		// Read Enemy File
+	
 		if (x1 > 150) {
 			x1--;
 		}
 		else if (x1 < 200) {
 			x1++;
 		}
-
          //ZoomSelector
+        enemyPoligon.drawInside(&panelSmall, &panelBig);
+        if (x) {
+			enemyPoligon.erase(&panelMain);
+			x = 0;
+			enemyPoligon.movePolygon(-1, 0);
+		} else {
+			x = 1;
+		}
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
+		enemyPoligon.draw(&panelMain);
         p.draw(&panelMain);
-        //p.draw_fill_color(0,0, &panelMain);
+        // p.draw_fill_color(0,0, &panelMain);
         player.player_shape.draw(&panelMain);
         a.drawFrame(panelMain);
         a.drawFrame(panelBig);
@@ -341,8 +357,6 @@ int main(int argc, char** argv){
             a.drawFrame(panelWin);
         }
 
-        //player.draw_player();
-        //a.set(Color::GREEN, 600,200);
         a.Draw();
 
         // panelMain.EmptyFrame();
