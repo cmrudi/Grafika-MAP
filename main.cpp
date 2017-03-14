@@ -4,6 +4,11 @@
 #include "poligon.h"
 #include "parser.h"
 #include "player.h"
+#include "color.h"
+#include "point.h"
+#include "frame.h"
+#include "framepanel.h"
+#include "framebuffer.h"
 #include <pthread.h>
 #include <termios.h>
 #include <thread>
