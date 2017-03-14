@@ -102,7 +102,7 @@ public:
         }
         player_center_point.Move(move_x, move_y);
         draw_player();
-        usleep(5);
+        //usleep(5);
         //usleep(500);
     }
 
@@ -126,11 +126,11 @@ public:
             inc = -1;
 
         while (this->player_direction != new_dir) {
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 3; i++) {
                 erase_player();
-                player_shape.rotate(15 * inc, player_center_point);
+                player_shape.rotate(30 * inc, player_center_point);
                 draw_player();
-                usleep(5);
+                //usleep(5);
 				//usleep(500);
             }
             this->player_direction += inc;
