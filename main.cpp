@@ -276,8 +276,8 @@ void *controller(void *args){
                 }
             }
             else if (c == 'c') {
-                panelSmall.setYMin(150);
-                panelSmall.setXMin(550);
+                panelSmall.setYMin(160);
+                panelSmall.setXMin(560);
                 player.player_cheat();
             }
             else if (c == 't') {
@@ -356,6 +356,14 @@ int main(int argc, char** argv){
         enemyPoligon2.add(Line(Enemy2[i-1],Enemy2[i]));
     }
     enemyPoligon2.add(Line(Enemy2[0],Enemy2[Enemy2.size()-1]));
+
+    enemy3.parseEnemy("object/enemy.txt", 220, 37);
+    int x3 = 220; int mutar3 = 0;
+    Enemy3 = enemy3.getTrees();
+    for(int i = 1; i < Enemy3.size(); i++){
+        enemyPoligon3.add(Line(Enemy3[i-1],Enemy3[i]));
+    }
+    enemyPoligon3.add(Line(Enemy3[0],Enemy3[Enemy3.size()-1]));
 	/////////////////////////////////
 
     pthread_create(&t_control, NULL, controller, NULL);
@@ -386,6 +394,7 @@ int main(int argc, char** argv){
         }
         
         enemyPoligon.draw(&panelMain);
+        
         enemyPoligon2.drawInside(&panelSmall, &panelBig);
         enemyPoligon2.erase(&panelMain);
         
@@ -403,8 +412,28 @@ int main(int argc, char** argv){
         if (x2 == 500) {
             mutar2 = 0;
         }
-        
         enemyPoligon2.draw(&panelMain);
+        
+        enemyPoligon3.drawInside(&panelSmall, &panelBig);
+        enemyPoligon3.erase(&panelMain);
+        
+        if (mutar3 == 1) {
+            enemyPoligon3.movePolygon(2, 0); 
+            x3 += 2;
+        }
+        else {
+            enemyPoligon3.movePolygon(-2, 0); 
+            x3 -= 2;
+        }
+        if (x3 == 40) {
+            mutar3 = 1;
+        }
+        if (x3 == 220) {
+            mutar3 = 0;
+        }
+        
+        enemyPoligon3.draw(&panelMain);
+        
         p.drawInside(&panelSmall, &panelBig);
         player.player_shape.drawInside(&panelSmall, &panelBig);
 
